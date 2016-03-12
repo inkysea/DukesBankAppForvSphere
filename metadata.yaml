@@ -1,0 +1,43 @@
+name: "DukesBankPackageForvSphere"
+productVersion: "7.0.0"
+data:
+- locator: "composite-blueprint/Blueprint.DukesBankApplicationForvSphere.yaml"
+  name: "Dukes Bank Application For vSphere"
+  description: "Dukes Bank Application For vSphere"
+  dependencies:
+  - "software-component/Software.ApacheLB.yaml"
+  - "software-component/Software.DukesBankApp.yaml"
+  - "software-component/Software.MySql.yaml"
+  - "software-component/Software.JBossAppServer.yaml"
+  - "software-component/Software.DukesBankDBSetup.yaml"
+- locator: "software-component/Software.ApacheLB.yaml"
+  name: "Apache Load Balancer"
+  description: "Apache 2.2 The Apache HTTP Server is an open-source HTTP server for\
+    \ modern operating systems including UNIX, Microsoft Windows, Mac OS/X and Netware.\
+    \ The goal of this project is to provide a secure, efficient and extensible server\
+    \ that provides HTTP services observing the current HTTP standards. Apache has\
+    \ been the most popular web server on the Internet since April of 1996."
+- locator: "software-component/Software.DukesBankApp.yaml"
+  name: "Dukes Bank Web Application"
+  description: "EAR file for Dukes Bank App"
+  dependencies:
+  - "software-component/Software.JBossAppServer.yaml"
+- locator: "software-component/Software.JBossAppServer.yaml"
+  name: "JBoss Application Server"
+  description: "Clusterable JBoss 5.1 on Linux JBoss Application Server is the open\
+    \ source implementation of the Java EE suite of services. It comprises a set of\
+    \ offerings for enterprise customers who are looking for preconfigured profiles\
+    \ of JBoss Enterprise Middleware components that have been tested and certified\
+    \ together to provide an integrated experience. It's easy-to-use server architecture\
+    \ and high flexibility makes JBoss the ideal choice for users just starting out\
+    \ with J2EE, as well as senior architects looking for a customizable middleware\
+    \ platform."
+- locator: "software-component/Software.MySql.yaml"
+  name: "MySQL Database"
+  description: "MySQL installation and configuration."
+- locator: "software-component/Software.DukesBankDBSetup.yaml"
+  name: "Dukes Bank Database setup"
+  description: "Script for Dukes Bank database creation and initialization of data."
+  dependencies:
+  - "software-component/Software.MySql.yaml"
+exportTime: "2015-10-02T18:29:34.803Z"

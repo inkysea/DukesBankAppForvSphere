@@ -1,0 +1,368 @@
+'@type': "SoftwareComponentType"
+createdDate: "2015-10-01T18:11:10.165Z"
+lastUpdated: "2015-10-02T20:20:45.713Z"
+id: "Software.DukesBankDBSetup"
+name: "Dukes Bank Database setup"
+description: "Script for Dukes Bank database creation and initialization of data."
+publishStatus: "PUBLISHED"
+publishStatusName: "Published"
+schema:
+  fields:
+  - id: "init_db_password"
+    label: "init_db_password"
+    description: "MySql root user password"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "Passw0rd"
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "encrypted"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+  - id: "host"
+    label: ""
+    description: ""
+    dataType:
+      type: "ref"
+      componentTypeId: "com.vmware.csp.component.software.service"
+      classId: "softwareResourceType"
+      typeFilter: "Software.MySql"
+      label: "MySql"
+    state:
+      dependencies: []
+      facets:
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "visible"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: false
+    isMultiValued: false
+  - id: "db_name"
+    label: "db_name"
+    description: "Dukes Bank database name"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "dukes_db"
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+  - id: "init_db_username"
+    label: "init_db_username"
+    description: "MySql root username"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "root"
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+  - id: "db_password"
+    label: "db_password"
+    description: "Dukes Bank DB password"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "Passw0rd"
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "encrypted"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+  - id: "db_username"
+    label: "db_username"
+    description: "Dukes Bank DB username"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "dukes_admin"
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+containerFieldId: "host"
+lifecycleTasks:
+- createdDate: "2015-10-01T18:11:10.167Z"
+  lastUpdated: "2015-10-02T20:20:45.713Z"
+  script:
+    scriptContent: "#!/bin/bash\nexport PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\n\
+      \n#Create database needed for Dukes bank\n\n#Dukes Bank DDL and DML\nINITIALIZE_DB_SCRIPT=/tmp/dukesbank-initiaze.sql\n\
+      \necho \"CREATE TABLE EJB_ORDER_SEQUENCE_GENERATOR (\n        GEN_KEY      \
+      \   VARCHAR(255),\n        GEN_VALUE       NUMERIC(20)\n);\n\nCREATE TABLE BANK_SEQUENCE_GENERATOR\
+      \ (\n        GEN_KEY         VARCHAR(255),\n        GEN_VALUE       NUMERIC(20)\n\
+      );\n\nCREATE TABLE BANK_ACCOUNT (\n    ACCOUNT_ID NUMERIC(20) NOT NULL,\n  \
+      \  TYPE VARCHAR(24),\n    DESCRIPTION VARCHAR(30),\n    BALANCE NUMERIC(10,2),\n\
+      \    CREDIT_LINE NUMERIC(10,2),\n    BEGIN_BALANCE NUMERIC(10,2),\n    BEGIN_BALANCE_TIME_STAMP\
+      \ TIMESTAMP,\n    CONSTRAINT PK_ACCOUNT PRIMARY KEY (ACCOUNT_ID));\n\nCREATE\
+      \ TABLE BANK_CUSTOMER (\n    CUSTOMER_ID NUMERIC(20) NOT NULL,\n    LAST_NAME\
+      \ VARCHAR(30),\n    FIRST_NAME VARCHAR(30),\n    MIDDLE_INITIAL VARCHAR(1),\n\
+      \    STREET VARCHAR(40),\n    CITY VARCHAR(40),\n    STATE VARCHAR(2),\n   \
+      \ ZIP VARCHAR(5),\n    PHONE VARCHAR(16),\n    EMAIL VARCHAR(30),\n    CONSTRAINT\
+      \ PK_CUSTOMER PRIMARY KEY (CUSTOMER_ID));\n\nCREATE TABLE BANK_TX (\n    TX_ID\
+      \ NUMERIC(20) NOT NULL,\n    ACCOUNT_ID NUMERIC(20),\n    TIME_STAMP TIMESTAMP,\n\
+      \    AMOUNT NUMERIC(10,2),\n    BALANCE NUMERIC(10,2),\n    DESCRIPTION VARCHAR(30),\n\
+      \    CONSTRAINT PK_TX PRIMARY KEY (TX_ID),\n    CONSTRAINT FK_TX_ACCOUNT_ID\
+      \ FOREIGN KEY (ACCOUNT_ID) REFERENCES BANK_ACCOUNT(ACCOUNT_ID));\n\nCREATE TABLE\
+      \ BANK_CUSTOMER_ACCOUNT_XREF (\n    CUSTOMER_ID NUMERIC(20), \n    ACCOUNT_ID\
+      \ NUMERIC(20),\n    CONSTRAINT FK_BANK_CUSTOMER_ID FOREIGN KEY (CUSTOMER_ID)\
+      \ REFERENCES BANK_CUSTOMER(CUSTOMER_ID),\n    CONSTRAINT FK_BANK_ACCOUNT_ID\
+      \ FOREIGN KEY (ACCOUNT_ID) REFERENCES BANK_ACCOUNT(ACCOUNT_ID));\n\n-- For Persistence\
+      \ order example\nINSERT INTO EJB_ORDER_SEQUENCE_GENERATOR\n    VALUES ('VENDOR_PART_ID',1);\n\
+      \n-- Duke's bank\n\nINSERT INTO BANK_SEQUENCE_GENERATOR\n    VALUES ('CUSTOMER_ID',203);\n\
+      \nINSERT INTO BANK_SEQUENCE_GENERATOR\n    VALUES ('ACCOUNT_ID',5050);\n\nINSERT\
+      \ INTO BANK_SEQUENCE_GENERATOR\n    VALUES ('TX_ID',100);\n\nINSERT INTO BANK_ACCOUNT\
+      \ VALUES\n(5005, 'Money Market', 'Hi Balance', 4000.00, 0.00, 3500.00, '2013-07-28\
+      \ 23:03:20');\n \nINSERT INTO BANK_ACCOUNT VALUES\n(5006, 'Checking', 'Checking',\
+      \ 85.00, 0.00, 66.54, '2013-07-21 03:12:00');\n\nINSERT INTO BANK_ACCOUNT VALUES\n\
+      (5007, 'Credit', 'Visa', 599.18, 5000.00, 166.08, '2013-07-23 10:13:54');\n\n\
+      INSERT INTO BANK_ACCOUNT VALUES\n(5008, 'Savings', 'Super Interest Account',\
+      \ 55601.35, 0.00, 5433.89, '2013-07-15 12:55:33');\n\nINSERT INTO BANK_CUSTOMER\
+      \ VALUES\n(200, 'Jones', 'Richard', 'K',\n '88 Poplar Ave.', 'Cupertino', 'CA',\
+      \ '95014',\n '408-123-4567', 'rhill@j2ee.com');\n\nINSERT INTO BANK_CUSTOMER\
+      \ VALUES\n(201, 'Jones', 'Mary', 'R',\n '88 Poplar Ave.', 'Cupertino', 'CA',\
+      \ '95014',\n '408-123-4567', 'mhill@j2ee.com');\n\nINSERT INTO BANK_CUSTOMER_ACCOUNT_XREF\
+      \ VALUES\n(200, 5005);\n\nINSERT INTO BANK_CUSTOMER_ACCOUNT_XREF VALUES\n(201,\
+      \ 5005);\n\nINSERT INTO BANK_CUSTOMER_ACCOUNT_XREF VALUES\n(200, 5006);\n\n\
+      INSERT INTO BANK_CUSTOMER_ACCOUNT_XREF VALUES\n(200, 5007);\n\nINSERT INTO BANK_CUSTOMER_ACCOUNT_XREF\
+      \ VALUES\n(201, 5006);\n\nINSERT INTO BANK_CUSTOMER_ACCOUNT_XREF VALUES\n(201,\
+      \ 5007);\n\nINSERT INTO BANK_CUSTOMER_ACCOUNT_XREF VALUES\n(200, 5008);\n\n\
+      INSERT INTO BANK_CUSTOMER_ACCOUNT_XREF VALUES\n(201, 5008);\n\nINSERT INTO BANK_TX\
+      \ VALUES\n(1, 5005, '2013-9-01 12:55:33', 200.00, 4200.00, 'Refund');\nUPDATE\
+      \ BANK_ACCOUNT SET BALANCE = 4200.00 WHERE ACCOUNT_ID = 5005;\nINSERT INTO BANK_TX\
+      \ VALUES\n(3, 5008, '2013-9-03 12:56:33', -1000.00, 54601.35, 'Transfer Out');\n\
+      UPDATE BANK_ACCOUNT SET BALANCE = 54604.35 WHERE ACCOUNT_ID = 5008; \nINSERT\
+      \ INTO BANK_TX VALUES\n(4, 5006, '2013-9-03 12:57:33', 1000.00, 1085.00, 'Transfer\
+      \ In');\nUPDATE BANK_ACCOUNT SET BALANCE = 1085.00 WHERE ACCOUNT_ID = 5006;\
+      \ \nINSERT INTO BANK_TX VALUES\n(5, 5007, '2013-9-05 12:58:33', 33.00, 199.08,\
+      \ 'Clothing');\nUPDATE BANK_ACCOUNT SET BALANCE = 199.08 WHERE ACCOUNT_ID =\
+      \ 5007; \nINSERT INTO BANK_TX VALUES\n(6, 5006, '2013-9-06 12:59:33', 2000.00,\
+      \ 3085.00, 'Paycheck Deposit');\nUPDATE BANK_ACCOUNT SET BALANCE = 3085.00 WHERE\
+      \ ACCOUNT_ID = 5006; \nINSERT INTO BANK_TX VALUES\n(7, 5005, '2013-9-07 13:00:33',\
+      \ -200.00, 4000.00, 'ATM Withdrawal');\nUPDATE BANK_ACCOUNT SET BALANCE = 3085.00\
+      \ WHERE ACCOUNT_ID = 5005; \nINSERT INTO BANK_TX VALUES\n(8, 5006, '2013-9-08\
+      \ 13:01:33', -200.00, 2885.00, 'Car Insurance');\nUPDATE BANK_ACCOUNT SET BALANCE\
+      \ = 2885.00 WHERE ACCOUNT_ID = 5006; \nINSERT INTO BANK_TX VALUES\n(9, 5007,\
+      \ '2013-9-09 13:02:33', 186.00, 385.08, 'Car Repair');\nUPDATE BANK_ACCOUNT\
+      \ SET BALANCE = 385.08 WHERE ACCOUNT_ID = 5007; \nINSERT INTO BANK_TX VALUES\n\
+      (10, 5008, '2013-9-10 12:55:33', 1000.00, 55601.35, 'Deposit');\nUPDATE BANK_ACCOUNT\
+      \ SET BALANCE = 55601.35 WHERE ACCOUNT_ID = 5008; \nINSERT INTO BANK_TX VALUES\n\
+      (11, 5007, '2013-9-11 12:55:33', 585.00, 970.08, 'Airplane Tickets');\nUPDATE\
+      \ BANK_ACCOUNT SET BALANCE = 970.08 WHERE ACCOUNT_ID = 5007; \nINSERT INTO BANK_TX\
+      \ VALUES\n(12, 5006, '2013-9-12 12:55:33', -675.00, 2210.00, 'Mortgage Payment');\n\
+      UPDATE BANK_ACCOUNT SET BALANCE = 2210.00 WHERE ACCOUNT_ID = 5006; \nINSERT\
+      \ INTO BANK_TX VALUES\n(13, 5005, '2013-9-13 12:55:33', -100.00, 3900.00, 'ATM\
+      \ Withdrawal');\nUPDATE BANK_ACCOUNT SET BALANCE = 3900.00 WHERE ACCOUNT_ID\
+      \ = 5005; \nINSERT INTO BANK_TX VALUES\n(14, 5006, '2013-9-14 12:55:33', -385.08,\
+      \ 1824.92, 'Visa Payment');\nUPDATE BANK_ACCOUNT SET BALANCE = 1824.92 WHERE\
+      \ ACCOUNT_ID = 5006; \nINSERT INTO BANK_TX VALUES\n(15, 5007, '2013-9-15 12:55:33',\
+      \ -385.08, 585.00, 'Payment');\nUPDATE BANK_ACCOUNT SET BALANCE = 585.00 WHERE\
+      \ ACCOUNT_ID = 5007; \nINSERT INTO BANK_TX VALUES\n(17, 5007, '2013-9-17 12:55:33',\
+      \ 26.95, 611.95, 'Movies');\nUPDATE BANK_ACCOUNT SET BALANCE = 611.95 WHERE\
+      \ ACCOUNT_ID = 5007; \nINSERT INTO BANK_TX VALUES\n(18, 5006, '2013-9-18 12:55:33',\
+      \ -31.00, 1793.92, 'Groceries');\nUPDATE BANK_ACCOUNT SET BALANCE = 1793.92\
+      \ WHERE ACCOUNT_ID = 5006; \nINSERT INTO BANK_TX VALUES\n(19, 5005, '2013-9-19\
+      \ 12:55:33', -150.00, 3750.00, 'ATM Withdrawal');\nUPDATE BANK_ACCOUNT SET BALANCE\
+      \ = 3750.00 WHERE ACCOUNT_ID = 5005; \nINSERT INTO BANK_TX VALUES\n(20, 5006,\
+      \ '2013-9-20 12:55:33', 2000.00, 3173.92, 'Paycheck Deposit');\nUPDATE BANK_ACCOUNT\
+      \ SET BALANCE = 3173.92 WHERE ACCOUNT_ID = 5006; \nINSERT INTO BANK_TX VALUES\n\
+      (21, 5007, '2013-9-21 12:55:33', 124.00, 735.95, 'Furnishings');\nUPDATE BANK_ACCOUNT\
+      \ SET BALANCE = 735.95 WHERE ACCOUNT_ID = 5007; \nINSERT INTO BANK_TX VALUES\n\
+      (23, 5007, '2013-9-23 12:55:33', 33.12, 769.07, 'Hardware');\nUPDATE BANK_ACCOUNT\
+      \ SET BALANCE = 769.07 WHERE ACCOUNT_ID = 5007; \nINSERT INTO BANK_TX VALUES\n\
+      (24, 5006, '2013-9-24 12:55:33', -175.33, 2998.59, 'Utility Bill');\nUPDATE\
+      \ BANK_ACCOUNT SET BALANCE = 2998.59 WHERE ACCOUNT_ID = 5006; \nINSERT INTO\
+      \ BANK_TX VALUES\n(25, 5006, '2013-9-25 12:55:33', -123.00, 2875.59, 'Groceries');\n\
+      UPDATE BANK_ACCOUNT SET BALANCE = 2875.59 WHERE ACCOUNT_ID = 5006; \nINSERT\
+      \ INTO BANK_TX VALUES\n(26, 5006, '2013-9-26 12:55:33', -675.00, 2200.59, 'Mortgage\
+      \ Payment');\nUPDATE BANK_ACCOUNT SET BALANCE = 2200.59 WHERE ACCOUNT_ID = 5006;\
+      \ \nINSERT INTO BANK_TX VALUES\n(27, 5007, '2013-9-27 12:55:33', 24.72, 793.79,\
+      \ 'Cafe');\nUPDATE BANK_ACCOUNT SET BALANCE = 793.79 WHERE ACCOUNT_ID = 5007;\
+      \ \nINSERT INTO BANK_TX VALUES\n(28, 5008, '2013-9-28 12:55:33', 1000.00, 56601.35,\
+      \ 'Deposit');\nUPDATE BANK_ACCOUNT SET BALANCE = 56601.35 WHERE ACCOUNT_ID =\
+      \ 5008; \nINSERT INTO BANK_TX VALUES\n(29, 5007, '2013-9-29 12:55:33', 35.00,\
+      \ 828.79, 'Hair Salon');\nUPDATE BANK_ACCOUNT SET BALANCE = 828.79 WHERE ACCOUNT_ID\
+      \ = 5007; \nINSERT INTO BANK_TX VALUES\n(30, 5006, '2013-9-30 12:55:33', -20.00,\
+      \ 2180.59, 'Gasoline');\nUPDATE BANK_ACCOUNT SET BALANCE = 2180.59 WHERE ACCOUNT_ID\
+      \ = 5006; \nINSERT INTO BANK_TX VALUES\n(31, 5005, '2013-10-01 12:55:33', -100.00,\
+      \ 3650.00, 'ATM Withdrawal');\nUPDATE BANK_ACCOUNT SET BALANCE = 3650.00 WHERE\
+      \ ACCOUNT_ID = 5005; \nINSERT INTO BANK_TX VALUES\n(32, 5006, '2013-10-02 12:55:33',\
+      \ -56.87, 2123.72, 'Phone Bill');\nUPDATE BANK_ACCOUNT SET BALANCE = 2123.72\
+      \ WHERE ACCOUNT_ID = 5006; \nINSERT INTO BANK_TX VALUES\n(33, 5007, '2013-10-03\
+      \ 12:55:33', 67.99, 896.78, 'Acme Shoes');\nUPDATE BANK_ACCOUNT SET BALANCE\
+      \ = 896.78 WHERE ACCOUNT_ID = 5007; \nINSERT INTO BANK_TX VALUES\n(35, 5007,\
+      \ '2013-10-05 12:55:33', 24.00, 920.78, 'Movies');\nUPDATE BANK_ACCOUNT SET\
+      \ BALANCE = 920.78 WHERE ACCOUNT_ID = 5007; \nINSERT INTO BANK_TX VALUES\n(36,\
+      \ 5006, '2013-10-06 12:55:33', 2000.00, 4123.72, 'Paycheck Deposit');\nUPDATE\
+      \ BANK_ACCOUNT SET BALANCE = 4123.72 WHERE ACCOUNT_ID = 5006; \nINSERT INTO\
+      \ BANK_TX VALUES\n(38, 5006, '2013-10-08 12:55:33', -100.00, 4023.72, 'Groceries');\n\
+      UPDATE BANK_ACCOUNT SET BALANCE = 4023.72 WHERE ACCOUNT_ID = 5006; \nINSERT\
+      \ INTO BANK_TX VALUES\n(39, 5007, '2013-10-09 12:55:33', 26.95, 947.73, 'Pizza');\n\
+      UPDATE BANK_ACCOUNT SET BALANCE = 947.73 WHERE ACCOUNT_ID = 5007; \nINSERT INTO\
+      \ BANK_TX VALUES\n(41, 5007, '2013-10-11 12:55:33', 125.00, 1072.73, 'Dentist');\n\
+      UPDATE BANK_ACCOUNT SET BALANCE = 1072.73 WHERE ACCOUNT_ID = 5007; \nINSERT\
+      \ INTO BANK_TX VALUES\n(42, 5006, '2013-10-12 12:55:33', -675.00, 3348.72, 'Mortgage\
+      \ Payment');\nUPDATE BANK_ACCOUNT SET BALANCE = 3348.72 WHERE ACCOUNT_ID = 5006;\
+      \ \nINSERT INTO BANK_TX VALUES\n(43, 5005, '2013-10-13 12:55:33', -150.00, 3500.00,\
+      \ 'ATM Withdrawal');\nUPDATE BANK_ACCOUNT SET BALANCE = 3500.00 WHERE ACCOUNT_ID\
+      \ = 5005; \nINSERT INTO BANK_TX VALUES\n(44, 5006, '2013-10-14 12:55:33', -947.73,\
+      \ 2400.99, 'Visa Payment');\nUPDATE BANK_ACCOUNT SET BALANCE = 2400.99 WHERE\
+      \ ACCOUNT_ID = 5006; \nINSERT INTO BANK_TX VALUES\n(45, 5007, '2013-10-15 12:55:33',\
+      \ -947.73, 125.00, 'Payment');\nUPDATE BANK_ACCOUNT SET BALANCE = 125.00 WHERE\
+      \ ACCOUNT_ID = 5007; \nINSERT INTO BANK_TX VALUES\n(47, 5007, '2013-10-17 12:55:33',\
+      \ 49.90, 100.85, 'Bookstore');\nUPDATE BANK_ACCOUNT SET BALANCE = 100.85 WHERE\
+      \ ACCOUNT_ID = 5007; \nINSERT INTO BANK_TX VALUES\n(48, 5006, '2013-10-18 12:55:33',\
+      \ -100.00, 2300.99, 'Groceries');\nUPDATE BANK_ACCOUNT SET BALANCE = 2300.99\
+      \ WHERE ACCOUNT_ID = 5006; \nINSERT INTO BANK_TX VALUES\n(50, 5006, '2013-10-20\
+      \ 12:55:33', 2000.00, 4300.99, 'Paycheck Deposit');\nUPDATE BANK_ACCOUNT SET\
+      \ BALANCE = 4300.99 WHERE ACCOUNT_ID = 5006; \nINSERT INTO BANK_TX VALUES\n\
+      (51, 5007, '2013-10-21 12:55:33', 80.32, 181.17, 'Restaurant');\nUPDATE BANK_ACCOUNT\
+      \ SET BALANCE = 181.17 WHERE ACCOUNT_ID = 5007; \nINSERT INTO BANK_TX VALUES\n\
+      (53, 5007, '2013-10-23 12:55:33', 11.78, 192.95, 'Electronics');\nUPDATE BANK_ACCOUNT\
+      \ SET BALANCE = 192.95 WHERE ACCOUNT_ID = 5007; \nINSERT INTO BANK_TX VALUES\n\
+      (54, 5006, '2013-10-24 12:55:33', -150.45, 4150.54, 'Utility Bill');\nUPDATE\
+      \ BANK_ACCOUNT SET BALANCE = 4150.54 WHERE ACCOUNT_ID = 5006; \nINSERT INTO\
+      \ BANK_TX VALUES\n(55, 5005, '2013-10-25 12:55:33', -100.00, 3400.00, 'ATM Withdrawal');\n\
+      UPDATE BANK_ACCOUNT SET BALANCE = 3400.00 WHERE ACCOUNT_ID = 5005; \nINSERT\
+      \ INTO BANK_TX VALUES\n(56, 5006, '2013-10-26 12:55:33', -675.00, 3475.54, 'Mortgage\
+      \ Payment');\nUPDATE BANK_ACCOUNT SET BALANCE = 3475.54 WHERE ACCOUNT_ID = 5006;\
+      \ \nINSERT INTO BANK_TX VALUES\n(57, 5007, '2013-10-27 12:55:33', 24.00, 216.95,\
+      \ 'Ice Skating');\nUPDATE BANK_ACCOUNT SET BALANCE = 216.95 WHERE ACCOUNT_ID\
+      \ = 5007; \nINSERT INTO BANK_TX VALUES\n(58, 5006, '2013-10-28 12:55:33', -1000.00,\
+      \ 2475.54, 'Transfer Out');\nUPDATE BANK_ACCOUNT SET BALANCE = 2475.54 WHERE\
+      \ ACCOUNT_ID = 5006; \nINSERT INTO BANK_TX VALUES\n(59, 5008, '2013-10-28 12:55:33',\
+      \ 1000.00, 57601.35, 'Transfer In');\nUPDATE BANK_ACCOUNT SET BALANCE = 57601.35\
+      \ WHERE ACCOUNT_ID = 5008; \nINSERT INTO BANK_TX VALUES\n(60, 5006, '2013-11-02\
+      \ 12:55:33', -99.22, 3376.32, 'Phone Bill');\nUPDATE BANK_ACCOUNT SET BALANCE\
+      \ = 3376.32 WHERE ACCOUNT_ID = 5006; \nINSERT INTO BANK_TX VALUES\n(61, 5007,\
+      \ '2013-11-03 12:55:33', 29.97, 246.92, 'Toy Store');\nUPDATE BANK_ACCOUNT SET\
+      \ BALANCE = 246.92 WHERE ACCOUNT_ID = 5007; \nINSERT INTO BANK_TX VALUES\n(62,\
+      \ 5006, '2013-11-04 12:55:33', -2000.00, 376.32, 'Transfer Out');\nUPDATE BANK_ACCOUNT\
+      \ SET BALANCE = 376.32 WHERE ACCOUNT_ID = 5006; \nINSERT INTO BANK_TX VALUES\n\
+      (63, 5008, '2013-11-05 12:55:33', 2000.00, 59601.35, 'Transfer In');\nUPDATE\
+      \ BANK_ACCOUNT SET BALANCE = 59601.35 WHERE ACCOUNT_ID = 5008; \nINSERT INTO\
+      \ BANK_TX VALUES\n(64, 5006, '2013-11-06 12:55:33', 2000.00, 2376.32, 'Paycheck\
+      \ Deposit');\nUPDATE BANK_ACCOUNT SET BALANCE = 59601.35 WHERE ACCOUNT_ID =\
+      \ 5006; \nINSERT INTO BANK_TX VALUES\n(65, 5007, '2013-11-07 12:55:33', 14.69,\
+      \ 261.61, 'Cafe');\nUPDATE BANK_ACCOUNT SET BALANCE = 261.61 WHERE ACCOUNT_ID\
+      \ = 5007; \nINSERT INTO BANK_TX VALUES\n(66, 5006, '2013-11-08 12:55:33', -108.99,\
+      \ 2267.33, 'Groceries');\nUPDATE BANK_ACCOUNT SET BALANCE = 2267.33 WHERE ACCOUNT_ID\
+      \ = 5006; \nINSERT INTO BANK_TX VALUES\n(67, 5006, '2013-11-09 12:55:33', -30.12,\
+      \ 2237.21, 'Gasoline');\nUPDATE BANK_ACCOUNT SET BALANCE = 2237.21 WHERE ACCOUNT_ID\
+      \ = 5006; \nINSERT INTO BANK_TX VALUES\n(69, 5007, '2013-11-11 12:55:33', 125.00,\
+      \ 386.61, 'Dentist');\nUPDATE BANK_ACCOUNT SET BALANCE = 2237.21 WHERE ACCOUNT_ID\
+      \ = 5007; \nINSERT INTO BANK_TX VALUES\n(70, 5006, '2013-11-12 12:55:33', -675.00,\
+      \ 1562.21, 'Mortgage Payment');\nUPDATE BANK_ACCOUNT SET BALANCE = 1562.21 WHERE\
+      \ ACCOUNT_ID = 5006;  \nINSERT INTO BANK_TX VALUES\n(72, 5006, '2013-11-13 12:55:33',\
+      \ -261.61, 1300.60, 'Visa Payment');\nUPDATE BANK_ACCOUNT SET BALANCE = 1300.60\
+      \ WHERE ACCOUNT_ID = 5006; \nINSERT INTO BANK_TX VALUES\n(73, 5007, '2013-11-14\
+      \ 12:55:33', -261.61, 125.00, 'Payment');\nUPDATE BANK_ACCOUNT SET BALANCE =\
+      \ 125.00 WHERE ACCOUNT_ID = 5007; \nINSERT INTO BANK_TX VALUES\n(75, 5007, '2013-11-15\
+      \ 12:55:33', 24.00, 149.00, 'Drug Store');\nUPDATE BANK_ACCOUNT SET BALANCE\
+      \ = 149.00 WHERE ACCOUNT_ID = 5007; \nINSERT INTO BANK_TX VALUES\n(76, 5006,\
+      \ '2014-03-16 12:55:33', -67.98, 1232.62, 'Groceries');\nUPDATE BANK_ACCOUNT\
+      \ SET BALANCE = 1232.62 WHERE ACCOUNT_ID = 5006; \nINSERT INTO BANK_TX VALUES\n\
+      (78, 5006, '2014-03-17 12:55:33', 2000.00, 3232.62, 'Paycheck Deposit');\nUPDATE\
+      \ BANK_ACCOUNT SET BALANCE = 3232.62 WHERE ACCOUNT_ID = 5006; \nINSERT INTO\
+      \ BANK_TX VALUES\n(79, 5007, '2014-03-18 12:55:33', 32.95, 181.95, 'CDs');\n\
+      UPDATE BANK_ACCOUNT SET BALANCE = 181.95 WHERE ACCOUNT_ID = 5007; \nINSERT INTO\
+      \ BANK_TX VALUES\n(81, 5007, '2014-04-01 12:55:33', 14.10, 196.05, 'Sports Store');\n\
+      UPDATE BANK_ACCOUNT SET BALANCE = 196.05 WHERE ACCOUNT_ID = 5007; \nINSERT INTO\
+      \ BANK_TX VALUES\n(82, 5006, '2014-04-01 12:55:33', -99.30, 3133.32, 'Utility\
+      \ Bill');\nUPDATE BANK_ACCOUNT SET BALANCE = 3133.32 WHERE ACCOUNT_ID = 5006;\
+      \ \nINSERT INTO BANK_TX VALUES\n(84, 5006, '2014-04-04 12:55:33', -675.00, 2458.32,\
+      \ 'Mortgage Payment');\nUPDATE BANK_ACCOUNT SET BALANCE = 2458.32 WHERE ACCOUNT_ID\
+      \ = 5006; \nINSERT INTO BANK_TX VALUES\n(85, 5007, '2014-04-10 12:55:33', 23.98,\
+      \ 220.03, 'Garden Supply');\nUPDATE BANK_ACCOUNT SET BALANCE = 220.03 WHERE\
+      \ ACCOUNT_ID = 5007; \nINSERT INTO BANK_TX VALUES\n(86, 5005, '2014-04-19 12:55:33',\
+      \ -100.00, 3300.00, 'ATM Withdrawal');\nUPDATE BANK_ACCOUNT SET BALANCE = 3300.00\
+      \ WHERE ACCOUNT_ID = 5005; \n\" > $INITIALIZE_DB_SCRIPT\n\n\n# duke's bank's\
+      \ db script\nINIT_DB_SCRIPT_FILE=init_db_script_file.sql\necho \"create user\
+      \ '${db_username}'@'localhost' identified by '${db_password}';\" > $INIT_DB_SCRIPT_FILE\n\
+      echo \"create user '${db_username}' identified by '${db_password}';\" >> $INIT_DB_SCRIPT_FILE\n\
+      echo \"create database ${db_name};\" >> $INIT_DB_SCRIPT_FILE\necho \"grant all\
+      \ privileges on ${db_name}.* to '${db_username}'@'localhost' identified by '${db_password}';\"\
+      \  >> $INIT_DB_SCRIPT_FILE\necho \"grant all privileges on ${db_name}.* to '${db_username}'\
+      \ identified by '${db_password}';\"  >> $INIT_DB_SCRIPT_FILE\necho \"flush privileges;\"\
+      \ >> $INIT_DB_SCRIPT_FILE\n\necho \"USE ${db_name};\" >> $INIT_DB_SCRIPT_FILE\n\
+      echo \"source ${INITIALIZE_DB_SCRIPT};\" >> $INIT_DB_SCRIPT_FILE\nmysql -u$init_db_username\
+      \ -p$init_db_password < $INIT_DB_SCRIPT_FILE"
+    isRebootAfter: false
+    scriptTypeId: "Bash"
+  taskDescriptorRef:
+    id: "INSTALL"
+    label: "Install"

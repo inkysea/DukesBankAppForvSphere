@@ -1,0 +1,279 @@
+'@type': "SoftwareComponentType"
+createdDate: "2015-10-02T18:28:17.232Z"
+lastUpdated: "2015-10-02T20:20:43.063Z"
+id: "Software.DukesBankApp"
+name: "Dukes Bank Web Application"
+description: "EAR file for Dukes Bank App"
+publishStatus: "PUBLISHED"
+publishStatusName: "Published"
+schema:
+  fields:
+  - id: "jboss_deploy_datasource_script"
+    label: "jboss_deploy_datasource_script"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/deploy_datasource.sh"
+    isMultiValued: false
+  - id: "host"
+    label: ""
+    description: ""
+    dataType:
+      type: "ref"
+      componentTypeId: "com.vmware.csp.component.software.service"
+      classId: "softwareResourceType"
+      typeFilter: "Software.JBossAppServer"
+      label: "JBossAppServer"
+    state:
+      dependencies: []
+      facets:
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "visible"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: false
+    isMultiValued: false
+  - id: "JAVA_HOME"
+    label: "JAVA_HOME"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: ""
+    isMultiValued: false
+  - id: "db_password"
+    label: "db_password"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets: []
+    isMultiValued: false
+  - id: "db_user"
+    label: "db_user"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets: []
+    isMultiValued: false
+  - id: "db_host"
+    label: "db_host"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets: []
+    isMultiValued: false
+  - id: "JBOSS_DATASOURCE_TEMPLATE"
+    label: "JBOSS_DATASOURCE_TEMPLATE"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/jboss-ds.xml.tmpl"
+    isMultiValued: false
+  - id: "APPD_SCRIPT"
+    label: "APPD_SCRIPT"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: ""
+    isMultiValued: false
+  - id: "app_content_server_ip"
+    label: "app_content_server_ip"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: ""
+    isMultiValued: false
+  - id: "app_content_server_port"
+    label: "app_content_server_port"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "5480"
+    isMultiValued: false
+  - id: "EAR_FILE"
+    label: "EAR_FILE"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/dukesbank-2b.ear"
+    isMultiValued: false
+  - id: "db_port"
+    label: "db_port"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets: []
+    isMultiValued: false
+  - id: "JAR_FILE"
+    label: "JAR_FILE"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/mysql.jdbc-5.1.6.jar"
+    isMultiValued: false
+  - id: "jboss_deploy_component_script"
+    label: "jboss_deploy_component_script"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/deploy_component.sh"
+    isMultiValued: false
+  - id: "dukes_db"
+    label: "dukes_db"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets: []
+    isMultiValued: false
+containerFieldId: "host"
+lifecycleTasks:
+- createdDate: "2015-10-02T18:28:17.234Z"
+  lastUpdated: "2015-10-02T20:20:43.063Z"
+  script:
+    scriptContent: "#!/bin/bash\nPATH=$PATH:/sbin:/usr/sbin:$JAVA_HOME/bin\n\nTESTJAVA=$(java\
+      \ -version 2>&1)\n\nif [[ \"${TESTJAVA}\" == *\"command not found\"* ]] ; then\n\
+      \   echo \"Java is unavailable and hence app cannot be installed\"\n   exit\
+      \ 1\nfi\n\nPING=`ping -c 5 $db_host`\n\nif [[ \"${PING}\" = \"Unreachable\"\
+      \ ]]; then\n    echo \"Database $db_host unreachable.\"\n    exit 1\nfi\n\n\
+      # Content properties\nmkdir /tmp/content\neval \"wget -q -O /tmp/content/deploy_datasource.sh\
+      \ $jboss_deploy_datasource_script\" --no-check-certificate\njboss_deploy_datasource_script=/tmp/content/deploy_datasource.sh\n\
+      chmod 777 $jboss_deploy_datasource_script\n\neval \"wget -q -O /tmp/content/deploy_component.sh\
+      \ $jboss_deploy_component_script\" --no-check-certificate\njboss_deploy_component_script=/tmp/content/deploy_component.sh\n\
+      chmod 777 $jboss_deploy_component_script\n\neval \"wget -q -O /tmp/content/jboss-dx.xml.tmpl\
+      \ $JBOSS_DATASOURCE_TEMPLATE\" --no-check-certificate\nJBOSS_DATASOURCE_TEMPLATE=/tmp/content/jboss-dx.xml.tmpl\n\
+      chmod 777 $JBOSS_DATASOURCE_TEMPLATE\n\neval \"wget -q -O /tmp/content/dukes_bank_2b.ear\
+      \ $EAR_FILE\" --no-check-certificate\nEAR_FILE=/tmp/content/dukes_bank_2b.ear\n\
+      chmod 777 $EAR_FILE\n\neval \"wget -q -O /tmp/content/appd_functions.sh $APPD_SCRIPT\"\
+      \ --no-check-certificate\nAPPD_SCRIPT=/tmp/content/appd_functions.sh\nchmod\
+      \ 777 $APPD_SCRIPT\n\neval \"wget -q -O /tmp/content/mysql.jdbc-5.1.6.jar $JAR_FILE\"\
+      \ --no-check-certificate\nJAR_FILE=/tmp/content/mysql.jdbc-5.1.6.jar\nchmod\
+      \ 777 $JAR_FILE\n\nexport JBOSS_DS_CONNECTION_URL=\"jdbc:mysql://$db_host:$db_port/$dukes_db\"\
+      \n \nservice jboss stop \n\n#overidable default vars\nif [ -z \"$JBOSS_DS_USER_NAME\"\
+      \ ]; then\n    export JBOSS_DS_USER_NAME=\"$db_user\"\nfi\n\nif [ -z \"$JBOSS_DS_USER_PWD\"\
+      \ ]; then\n    export JBOSS_DS_USER_PWD=\"$db_password\"\nfi\n\nif [ -z \"$JBOSS_DS_JNDI_NAME\"\
+      \ ]; then\n    export JBOSS_DS_JNDI_NAME=\"dukesBankDS\"\nfi\n\nif [ -z \"$JBOSS_NAME_AND_VERSION\"\
+      \ ]; then\n    export JBOSS_NAME_AND_VERSION=\"jboss-5.1.0.GA\"\nfi\n\nif [\
+      \ -z \"$JBOSS_INSTANCE_NAME\" ]; then\n    export JBOSS_INSTANCE_NAME=\"default\"\
+      \nfi\n\nif [ -z \"$JBOSS_DS_DRIVER_CLASS\" ]; then\n    export JBOSS_DS_DRIVER_CLASS=\"\
+      com.mysql.jdbc.Driver\"\nfi\n\n. $jboss_deploy_datasource_script &> /tmp/jboss_deploy_ds.log\n\
+      export JBOSS_COMPONENT_FILE=$EAR_FILE\necho \"reinstall ${JBOSS_COMPONENT_FILE}\
+      \ file\"\n. $jboss_deploy_component_script &> /tmp/jboss_deploy_ear.log\nexport\
+      \ JBOSS_COMPONENT_FILE=$JAR_FILE\necho \"reinstall ${JBOSS_COMPONENT_FILE} file\"\
+      \n. $jboss_deploy_component_script &> /tmp/jboss_deploy_jar.log\n\necho \"back\
+      \ up the jboss component files\"\nmkdir -p /tmp/jboss/dukesbank/deploy\nmkdir\
+      \ -p /tmp/jboss/dukesbank/lib\nBASE_EAR_FILE=`basename ${EAR_FILE}`\nBASE_JAR_FILE=`basename\
+      \ ${JAR_FILE}`\ntouch /tmp/jboss/dukesbank/deploy/${BASE_EAR_FILE}\ntouch /tmp/jboss/dukesbank/lib/${BASE_JAR_FILE}\n\
+      \nservice jboss start\nsleep 120\n\n             "
+    isRebootAfter: false
+    scriptTypeId: "Bash"
+  taskDescriptorRef:
+    id: "INSTALL"
+    label: "Install"
