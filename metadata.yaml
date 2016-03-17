@@ -1,4 +1,4 @@
-name: "DukesBankPackageForvSphere"
+name: "DukesBankPackageForvSpherev1"
 productVersion: "7.0.0"
 data:
 - locator: "composite-blueprint/Blueprint.DukesBankApplicationForvSphere.yaml"
