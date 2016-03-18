@@ -1,6 +1,6 @@
 '@type': "SoftwareComponentType"
-createdDate: "2015-10-01T18:11:10.165Z"
-lastUpdated: "2015-10-02T20:20:45.713Z"
+createdDate: "2016-03-13T22:57:10.472Z"
+lastUpdated: "2016-03-14T02:41:01.227Z"
 id: "Software.DukesBankDBSetup"
 name: "Dukes Bank Database setup"
 description: "Script for Dukes Bank database creation and initialization of data."
@@ -8,9 +8,9 @@ publishStatus: "PUBLISHED"
 publishStatusName: "Published"
 schema:
   fields:
-  - id: "init_db_password"
-    label: "init_db_password"
-    description: "MySql root user password"
+  - id: "db_name"
+    label: "db_name"
+    description: "Dukes Bank database name"
     dataType:
       type: "primitive"
       typeId: "STRING"
@@ -22,14 +22,30 @@ schema:
           type: "constant"
           value:
             type: "string"
-            value: "Passw0rd"
+            value: "dukes_db"
       - type: "mandatory"
         value:
           type: "constant"
           value:
             type: "boolean"
             value: true
-      - type: "encrypted"
+    isMultiValued: false
+  - id: "db_username"
+    label: "db_username"
+    description: "Dukes Bank DB username"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "dukes_admin"
+      - type: "mandatory"
         value:
           type: "constant"
           value:
@@ -48,34 +64,12 @@ schema:
     state:
       dependencies: []
       facets:
-      - type: "mandatory"
-        value:
-          type: "constant"
-          value:
-            type: "boolean"
-            value: true
       - type: "visible"
         value:
           type: "constant"
           value:
             type: "boolean"
             value: false
-    isMultiValued: false
-  - id: "db_name"
-    label: "db_name"
-    description: "Dukes Bank database name"
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets:
-      - type: "defaultValue"
-        value:
-          type: "constant"
-          value:
-            type: "string"
-            value: "dukes_db"
       - type: "mandatory"
         value:
           type: "constant"
@@ -105,6 +99,34 @@ schema:
             type: "boolean"
             value: true
     isMultiValued: false
+  - id: "init_db_password"
+    label: "init_db_password"
+    description: "MySql root user password"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "secureString"
+            value: ""
+      - type: "encrypted"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
   - id: "db_password"
     label: "db_password"
     description: "Dukes Bank DB password"
@@ -118,36 +140,14 @@ schema:
         value:
           type: "constant"
           value:
-            type: "string"
-            value: "Passw0rd"
-      - type: "mandatory"
-        value:
-          type: "constant"
-          value:
-            type: "boolean"
-            value: true
+            type: "secureString"
+            value: ""
       - type: "encrypted"
         value:
           type: "constant"
           value:
             type: "boolean"
             value: true
-    isMultiValued: false
-  - id: "db_username"
-    label: "db_username"
-    description: "Dukes Bank DB username"
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets:
-      - type: "defaultValue"
-        value:
-          type: "constant"
-          value:
-            type: "string"
-            value: "dukes_admin"
       - type: "mandatory"
         value:
           type: "constant"
@@ -157,8 +157,8 @@ schema:
     isMultiValued: false
 containerFieldId: "host"
 lifecycleTasks:
-- createdDate: "2015-10-01T18:11:10.167Z"
-  lastUpdated: "2015-10-02T20:20:45.713Z"
+- createdDate: "2016-03-13T22:57:10.473Z"
+  lastUpdated: "2016-03-14T02:41:01.227Z"
   script:
     scriptContent: "#!/bin/bash\nexport PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\n\
       \n#Create database needed for Dukes bank\n\n#Dukes Bank DDL and DML\nINITIALIZE_DB_SCRIPT=/tmp/dukesbank-initiaze.sql\n\

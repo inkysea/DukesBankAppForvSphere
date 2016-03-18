@@ -1,15 +1,34 @@
-name: "DukesBankPackageForvSpherev1"
-productVersion: "7.0.0"
+name: "auto-generated-pkg-906cca07-d254-4890-9969-511727f9a322"
+productVersion: "7.0.1-SNAPSHOT"
 data:
 - locator: "composite-blueprint/Blueprint.DukesBankApplicationForvSphere.yaml"
   name: "Dukes Bank Application For vSphere"
   description: "Dukes Bank Application For vSphere"
   dependencies:
-  - "software-component/Software.ApacheLB.yaml"
+  - "software-component/Software.JBossAppServer.yaml"
   - "software-component/Software.DukesBankApp.yaml"
   - "software-component/Software.MySql.yaml"
-  - "software-component/Software.JBossAppServer.yaml"
+  - "software-component/Software.centosyumrepo.yaml"
   - "software-component/Software.DukesBankDBSetup.yaml"
+  - "software-component/Software.ApacheLB.yaml"
+- locator: "software-component/Software.JBossAppServer.yaml"
+  name: "JBoss Application Server"
+  description: "Clusterable JBoss 5.1 on Linux JBoss Application Server is the open\
+    \ source implementation of the Java EE suite of services. It comprises a set of\
+    \ offerings for enterprise customers who are looking for preconfigured profiles\
+    \ of JBoss Enterprise Middleware components that have been tested and certified\
+    \ together to provide an integrated experience. It's easy-to-use server architecture\
+    \ and high flexibility makes JBoss the ideal choice for users just starting out\
+    \ with J2EE, as well as senior architects looking for a customizable middleware\
+    \ platform."
+- locator: "software-component/Software.DukesBankDBSetup.yaml"
+  name: "Dukes Bank Database setup"
+  description: "Script for Dukes Bank database creation and initialization of data."
+  dependencies:
+  - "software-component/Software.MySql.yaml"
+- locator: "software-component/Software.MySql.yaml"
+  name: "MySQL Database"
+  description: "MySQL installation and configuration 123."
 - locator: "software-component/Software.ApacheLB.yaml"
   name: "Apache Load Balancer"
   description: "Apache 2.2 The Apache HTTP Server is an open-source HTTP server for\
@@ -22,22 +41,6 @@ data:
   description: "EAR file for Dukes Bank App"
   dependencies:
   - "software-component/Software.JBossAppServer.yaml"
-- locator: "software-component/Software.JBossAppServer.yaml"
-  name: "JBoss Application Server"
-  description: "Clusterable JBoss 5.1 on Linux JBoss Application Server is the open\
-    \ source implementation of the Java EE suite of services. It comprises a set of\
-    \ offerings for enterprise customers who are looking for preconfigured profiles\
-    \ of JBoss Enterprise Middleware components that have been tested and certified\
-    \ together to provide an integrated experience. It's easy-to-use server architecture\
-    \ and high flexibility makes JBoss the ideal choice for users just starting out\
-    \ with J2EE, as well as senior architects looking for a customizable middleware\
-    \ platform."
-- locator: "software-component/Software.MySql.yaml"
-  name: "MySQL Database"
-  description: "MySQL installation and configuration."
-- locator: "software-component/Software.DukesBankDBSetup.yaml"
-  name: "Dukes Bank Database setup"
-  description: "Script for Dukes Bank database creation and initialization of data."
-  dependencies:
-  - "software-component/Software.MySql.yaml"
-exportTime: "2015-10-02T18:29:34.803Z"
+- locator: "software-component/Software.centosyumrepo.yaml"
+  name: "centos yum repo"
+exportTime: "2016-03-17T20:50:35.208Z"

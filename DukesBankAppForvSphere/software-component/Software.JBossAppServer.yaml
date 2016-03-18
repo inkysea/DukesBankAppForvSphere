@@ -1,6 +1,6 @@
 '@type': "SoftwareComponentType"
-createdDate: "2015-10-02T18:28:11.256Z"
-lastUpdated: "2015-10-02T20:26:00.620Z"
+createdDate: "2016-03-13T22:57:10.730Z"
+lastUpdated: "2016-03-14T02:41:01.508Z"
 id: "Software.JBossAppServer"
 name: "JBoss Application Server"
 description: "Clusterable JBoss 5.1 on Linux JBoss Application Server is the open\
@@ -15,9 +15,9 @@ publishStatus: "PUBLISHED"
 publishStatusName: "Published"
 schema:
   fields:
-  - id: "cheetah_install_script"
-    label: "cheetah_install_script"
-    description: "URL to download the Cheetah installation script"
+  - id: "JBOSS_NAME_AND_VERSION"
+    label: "JBOSS_NAME_AND_VERSION"
+    description: "JBoss name and version"
     dataType:
       type: "primitive"
       typeId: "STRING"
@@ -29,31 +29,24 @@ schema:
           type: "constant"
           value:
             type: "string"
-            value: "https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/cheetah_install.sh"
+            value: "jboss-5.1.0.GA"
     isMultiValued: false
-  - id: "host"
-    label: ""
-    description: ""
+  - id: "Install_Path"
+    label: "Install_Path"
+    description: "Install path for JBoss, for AppConsole to match up the services\
+      \ in Monitoring Server"
     dataType:
-      type: "ref"
-      componentTypeId: "com.vmware.csp.iaas.blueprint.service"
-      classId: "Infrastructure.Machine.Schema"
-      label: "Machine"
+      type: "primitive"
+      typeId: "STRING"
     state:
       dependencies: []
       facets:
-      - type: "mandatory"
+      - type: "defaultValue"
         value:
           type: "constant"
           value:
-            type: "boolean"
-            value: true
-      - type: "visible"
-        value:
-          type: "constantClause"
-          value:
-            type: "boolean"
-            value: false
+            type: "string"
+            value: ""
     isMultiValued: false
   - id: "JAVA_HOME"
     label: "JAVA_HOME"
@@ -77,108 +70,6 @@ schema:
             type: "boolean"
             value: true
     isMultiValued: false
-  - id: "JVM_ROUTE"
-    label: "JVM_ROUTE"
-    description: "JVM route"
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets:
-      - type: "defaultValue"
-        value:
-          type: "constant"
-          value:
-            type: "string"
-            value: "0"
-    isMultiValued: false
-  - id: "jboss_install_script"
-    label: "jboss_install_script"
-    description: "URL to download JBoss installation script"
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets:
-      - type: "defaultValue"
-        value:
-          type: "constant"
-          value:
-            type: "string"
-            value: "https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/install.sh"
-    isMultiValued: false
-  - id: "JBOSS_JMX_CONSOLE_USERS_TEMPLATE"
-    label: "JBOSS_JMX_CONSOLE_USERS_TEMPLATE"
-    description: "URL to download JBoss JMX console user template"
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets:
-      - type: "defaultValue"
-        value:
-          type: "constant"
-          value:
-            type: "string"
-            value: "https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/jmx-console-users.properties.tmpl"
-    isMultiValued: false
-  - id: "JBOSS_BOOTRC_TEMPLATE"
-    label: "JBOSS_BOOTRC_TEMPLATE"
-    description: "URL to download JBoss application server bootup script"
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets:
-      - type: "defaultValue"
-        value:
-          type: "constant"
-          value:
-            type: "string"
-            value: "https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/boot.rc.tmpl"
-    isMultiValued: false
-  - id: "JBOSS_NAME_AND_VERSION"
-    label: "JBOSS_NAME_AND_VERSION"
-    description: "JBoss name and version"
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets:
-      - type: "defaultValue"
-        value:
-          type: "constant"
-          value:
-            type: "string"
-            value: "jboss-5.1.0.GA"
-    isMultiValued: false
-  - id: "app_content_server_ip"
-    label: "app_content_server_ip"
-    description: "Artifact server ip for wget."
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets:
-      - type: "defaultValue"
-        value:
-          type: "constant"
-          value:
-            type: "string"
-            value: ""
-      - type: "mandatory"
-        value:
-          type: "constant"
-          value:
-            type: "boolean"
-            value: true
-    isMultiValued: false
   - id: "app_content_server_port"
     label: "app_content_server_port"
     description: "Artifact server port for wget."
@@ -188,34 +79,12 @@ schema:
     state:
       dependencies: []
       facets:
-      - type: "mandatory"
-        value:
-          type: "constant"
-          value:
-            type: "boolean"
-            value: true
       - type: "defaultValue"
         value:
           type: "constant"
           value:
             type: "string"
             value: "5480"
-    isMultiValued: false
-  - id: "JBOSS_PORT_NUMBER"
-    label: "JBOSS_PORT_NUMBER"
-    description: "The JBoss Port Number"
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets:
-      - type: "defaultValue"
-        value:
-          type: "constant"
-          value:
-            type: "string"
-            value: "8080"
       - type: "mandatory"
         value:
           type: "constant"
@@ -255,44 +124,6 @@ schema:
             type: "string"
             value: "https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/cheetah-2.4.4.tar.gz"
     isMultiValued: false
-  - id: "jboss_configure_script"
-    label: "jboss_configure_script"
-    description: "URL to download JBoss configuration script"
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets:
-      - type: "defaultValue"
-        value:
-          type: "constant"
-          value:
-            type: "string"
-            value: "https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/configure.sh"
-    isMultiValued: false
-  - id: "JBOSS_JMX_PWD"
-    label: "JBOSS_JMX_PWD"
-    description: "JBoss JMX password"
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets:
-      - type: "defaultValue"
-        value:
-          type: "constant"
-          value:
-            type: "string"
-            value: "Passw0rd"
-      - type: "encrypted"
-        value:
-          type: "constant"
-          value:
-            type: "boolean"
-            value: true
-    isMultiValued: false
   - id: "zip_url"
     label: "zip_url"
     description: "URL to download JBoss package"
@@ -309,10 +140,63 @@ schema:
             type: "string"
             value: "https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/jboss-5.1.0.GA.zip"
     isMultiValued: false
-  - id: "Install_Path"
-    label: "Install_Path"
-    description: "Install path for JBoss, for AppConsole to match up the services\
-      \ in Monitoring Server"
+  - id: "jboss_install_script"
+    label: "jboss_install_script"
+    description: "URL to download JBoss installation script"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/install.sh"
+    isMultiValued: false
+  - id: "JBOSS_BOOTRC_TEMPLATE"
+    label: "JBOSS_BOOTRC_TEMPLATE"
+    description: "URL to download JBoss application server bootup script"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/boot.rc.tmpl"
+    isMultiValued: false
+  - id: "JBOSS_JMX_PWD"
+    label: "JBOSS_JMX_PWD"
+    description: "JBoss JMX password"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "secureString"
+            value: ""
+      - type: "encrypted"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+  - id: "app_content_server_ip"
+    label: "app_content_server_ip"
+    description: "Artifact server ip for wget."
     dataType:
       type: "primitive"
       typeId: "STRING"
@@ -325,6 +209,44 @@ schema:
           value:
             type: "string"
             value: ""
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+  - id: "cheetah_install_script"
+    label: "cheetah_install_script"
+    description: "URL to download the Cheetah installation script"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/cheetah_install.sh"
+    isMultiValued: false
+  - id: "jboss_configure_script"
+    label: "jboss_configure_script"
+    description: "URL to download JBoss configuration script"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/configure.sh"
     isMultiValued: false
   - id: "JBOSS_INSTANCE_NAME"
     label: "JBOSS_INSTANCE_NAME"
@@ -342,42 +264,88 @@ schema:
             type: "string"
             value: "default"
     isMultiValued: false
+  - id: "host"
+    label: ""
+    description: ""
+    dataType:
+      type: "ref"
+      componentTypeId: "com.vmware.csp.iaas.blueprint.service"
+      classId: "Infrastructure.Machine.Schema"
+      label: "Machine"
+    state:
+      dependencies: []
+      facets:
+      - type: "visible"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: false
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+  - id: "JVM_ROUTE"
+    label: "JVM_ROUTE"
+    description: "JVM route"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "0"
+    isMultiValued: false
+  - id: "JBOSS_JMX_CONSOLE_USERS_TEMPLATE"
+    label: "JBOSS_JMX_CONSOLE_USERS_TEMPLATE"
+    description: "URL to download JBoss JMX console user template"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/jmx-console-users.properties.tmpl"
+    isMultiValued: false
+  - id: "JBOSS_PORT_NUMBER"
+    label: "JBOSS_PORT_NUMBER"
+    description: "The JBoss Port Number"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "8080"
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
 containerFieldId: "host"
 lifecycleTasks:
-- createdDate: "2015-10-02T18:28:11.260Z"
-  lastUpdated: "2015-10-02T20:26:00.620Z"
-  script:
-    scriptContent: "#!/bin/bash\n# Import global conf\nexport ftp_proxy=${ftp_proxy:-$global_ftp_proxy}\n\
-      echo \"Setting ftp_proxy to $ftp_proxy\"\n\nexport http_proxy=${http_proxy:-$global_http_proxy}\n\
-      echo \"Setting http_proxy to $http_proxy\"\n\nexport https_proxy=${https_proxy:-$global_https_proxy}\n\
-      echo \"Setting https_proxy to $https_proxy\"\n\n\n#\n# Determine operating system\
-      \ and version \n#\nexport OS=\nexport OS_VERSION=\n\nif [ -f /etc/redhat-release\
-      \ ]; then\n    # For CentOS the result will be 'CentOS'\n    # For RHEL the\
-      \ result will be 'Red'\n    OS=$(cat /etc/redhat-release | awk {'print $1'})\n\
-      \n    if [ -n $OS ] && [ $OS = 'CentOS' ]; then\n        OS_VERSION=$(cat /etc/redhat-release\
-      \ | awk '{print $3}')\n    else\n        # RHEL\n        OS_VERSION=$(cat /etc/redhat-release\
-      \ | awk '{print $7}')\n    fi\n\nelif [ -f /etc/SuSE-release ]; then\n    OS=SuSE\n\
-      \n    MAJOR_VERSION=$(cat /etc/SuSE-release | grep VERSION | awk '{print $3}')\n\
-      \    PATCHLEVEL=$(cat /etc/SuSE-release | grep PATCHLEVEL | awk '{print $3}')\n\
-      \n    OS_VERSION=\"$MAJOR_VERSION.$PATCHLEVEL\"\n\nelif [ -f /usr/bin/lsb_release\
-      \ ]; then\n    # For Ubuntu the result is 'Ubuntu'\n    OS=$(lsb_release -a\
-      \ 2> /dev/null | grep Distributor | awk '{print $3}')\n    OS_VERSION=$(lsb_release\
-      \ -a 2> /dev/null | grep Release | awk '{print $2}')\n\nfi\n\njboss_configure_script=/tmp/content/jboss_configure.sh\n\
-      \nexport PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$JAVA_HOME/bin\n\
-      set -e\n\n. $jboss_configure_script 2>&1 | tee /tmp/jboss_cfg_output\nexport\
-      \ profileconfigFile=\"/home/jboss/$JBOSS_NAME_AND_VERSION/jboss-as/server/$JBOSS_INSTANCE_NAME/conf/bootstrap/profile.xml\"\
-      \nsed -i \"s/<constructor><parameter><inject bean=\\\"BootstrapProfileFactory\\\
-      \" property=\\\"attachmentStoreRoot\\\" \\/><\\/parameter><\\/constructor>/<constructor><parameter\
-      \ class=\\\"java.io.File\\\"><inject bean=\\\"BootstrapProfileFactory\\\" property=\\\
-      \"attachmentStoreRoot\\\" \\/><\\/parameter><\\/constructor>/g\" $profileconfigFile\n\
-      \n                \n            "
-    isRebootAfter: false
-    scriptTypeId: "Bash"
-  taskDescriptorRef:
-    id: "CONFIGURE"
-    label: "Configure"
-- createdDate: "2015-10-02T18:28:11.262Z"
-  lastUpdated: "2015-10-02T20:26:00.620Z"
+- createdDate: "2016-03-13T22:57:10.735Z"
+  lastUpdated: "2016-03-14T02:41:01.508Z"
   script:
     scriptContent: "#!/bin/bash\n# Import global conf \nexport ftp_proxy=${ftp_proxy:-$global_ftp_proxy}\n\
       echo \"Setting ftp_proxy to $ftp_proxy\"\n\nexport http_proxy=${http_proxy:-$global_http_proxy}\n\
@@ -432,8 +400,8 @@ lifecycleTasks:
   taskDescriptorRef:
     id: "INSTALL"
     label: "Install"
-- createdDate: "2015-10-02T18:28:11.261Z"
-  lastUpdated: "2015-10-02T20:26:00.620Z"
+- createdDate: "2016-03-13T22:57:10.734Z"
+  lastUpdated: "2016-03-14T02:41:01.508Z"
   script:
     scriptContent: "#!/bin/bash\n# Import global conf\nexport ftp_proxy=${ftp_proxy:-$global_ftp_proxy}\n\
       echo \"Setting ftp_proxy to $ftp_proxy\"\n\nexport http_proxy=${http_proxy:-$global_http_proxy}\n\
@@ -460,3 +428,35 @@ lifecycleTasks:
   taskDescriptorRef:
     id: "START"
     label: "Start"
+- createdDate: "2016-03-13T22:57:10.732Z"
+  lastUpdated: "2016-03-14T02:41:01.508Z"
+  script:
+    scriptContent: "#!/bin/bash\n# Import global conf\nexport ftp_proxy=${ftp_proxy:-$global_ftp_proxy}\n\
+      echo \"Setting ftp_proxy to $ftp_proxy\"\n\nexport http_proxy=${http_proxy:-$global_http_proxy}\n\
+      echo \"Setting http_proxy to $http_proxy\"\n\nexport https_proxy=${https_proxy:-$global_https_proxy}\n\
+      echo \"Setting https_proxy to $https_proxy\"\n\n\n#\n# Determine operating system\
+      \ and version \n#\nexport OS=\nexport OS_VERSION=\n\nif [ -f /etc/redhat-release\
+      \ ]; then\n    # For CentOS the result will be 'CentOS'\n    # For RHEL the\
+      \ result will be 'Red'\n    OS=$(cat /etc/redhat-release | awk {'print $1'})\n\
+      \n    if [ -n $OS ] && [ $OS = 'CentOS' ]; then\n        OS_VERSION=$(cat /etc/redhat-release\
+      \ | awk '{print $3}')\n    else\n        # RHEL\n        OS_VERSION=$(cat /etc/redhat-release\
+      \ | awk '{print $7}')\n    fi\n\nelif [ -f /etc/SuSE-release ]; then\n    OS=SuSE\n\
+      \n    MAJOR_VERSION=$(cat /etc/SuSE-release | grep VERSION | awk '{print $3}')\n\
+      \    PATCHLEVEL=$(cat /etc/SuSE-release | grep PATCHLEVEL | awk '{print $3}')\n\
+      \n    OS_VERSION=\"$MAJOR_VERSION.$PATCHLEVEL\"\n\nelif [ -f /usr/bin/lsb_release\
+      \ ]; then\n    # For Ubuntu the result is 'Ubuntu'\n    OS=$(lsb_release -a\
+      \ 2> /dev/null | grep Distributor | awk '{print $3}')\n    OS_VERSION=$(lsb_release\
+      \ -a 2> /dev/null | grep Release | awk '{print $2}')\n\nfi\n\njboss_configure_script=/tmp/content/jboss_configure.sh\n\
+      \nexport PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$JAVA_HOME/bin\n\
+      set -e\n\n. $jboss_configure_script 2>&1 | tee /tmp/jboss_cfg_output\nexport\
+      \ profileconfigFile=\"/home/jboss/$JBOSS_NAME_AND_VERSION/jboss-as/server/$JBOSS_INSTANCE_NAME/conf/bootstrap/profile.xml\"\
+      \nsed -i \"s/<constructor><parameter><inject bean=\\\"BootstrapProfileFactory\\\
+      \" property=\\\"attachmentStoreRoot\\\" \\/><\\/parameter><\\/constructor>/<constructor><parameter\
+      \ class=\\\"java.io.File\\\"><inject bean=\\\"BootstrapProfileFactory\\\" property=\\\
+      \"attachmentStoreRoot\\\" \\/><\\/parameter><\\/constructor>/g\" $profileconfigFile\n\
+      \n                \n            "
+    isRebootAfter: false
+    scriptTypeId: "Bash"
+  taskDescriptorRef:
+    id: "CONFIGURE"
+    label: "Configure"

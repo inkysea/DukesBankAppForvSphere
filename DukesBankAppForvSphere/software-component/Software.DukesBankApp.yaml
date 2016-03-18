@@ -1,6 +1,6 @@
 '@type': "SoftwareComponentType"
-createdDate: "2015-10-02T18:28:17.232Z"
-lastUpdated: "2015-10-02T20:20:43.063Z"
+createdDate: "2016-03-13T22:57:11.008Z"
+lastUpdated: "2016-03-14T02:41:01.779Z"
 id: "Software.DukesBankApp"
 name: "Dukes Bank Web Application"
 description: "EAR file for Dukes Bank App"
@@ -23,77 +23,6 @@ schema:
           value:
             type: "string"
             value: "https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/deploy_datasource.sh"
-    isMultiValued: false
-  - id: "host"
-    label: ""
-    description: ""
-    dataType:
-      type: "ref"
-      componentTypeId: "com.vmware.csp.component.software.service"
-      classId: "softwareResourceType"
-      typeFilter: "Software.JBossAppServer"
-      label: "JBossAppServer"
-    state:
-      dependencies: []
-      facets:
-      - type: "mandatory"
-        value:
-          type: "constant"
-          value:
-            type: "boolean"
-            value: true
-      - type: "visible"
-        value:
-          type: "constantClause"
-          value:
-            type: "boolean"
-            value: false
-    isMultiValued: false
-  - id: "JAVA_HOME"
-    label: "JAVA_HOME"
-    description: ""
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets:
-      - type: "defaultValue"
-        value:
-          type: "constant"
-          value:
-            type: "string"
-            value: ""
-    isMultiValued: false
-  - id: "db_password"
-    label: "db_password"
-    description: ""
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets: []
-    isMultiValued: false
-  - id: "db_user"
-    label: "db_user"
-    description: ""
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets: []
-    isMultiValued: false
-  - id: "db_host"
-    label: "db_host"
-    description: ""
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets: []
     isMultiValued: false
   - id: "JBOSS_DATASOURCE_TEMPLATE"
     label: "JBOSS_DATASOURCE_TEMPLATE"
@@ -127,8 +56,8 @@ schema:
             type: "string"
             value: ""
     isMultiValued: false
-  - id: "app_content_server_ip"
-    label: "app_content_server_ip"
+  - id: "JAVA_HOME"
+    label: "JAVA_HOME"
     description: ""
     dataType:
       type: "primitive"
@@ -152,18 +81,18 @@ schema:
     state:
       dependencies: []
       facets:
-      - type: "mandatory"
-        value:
-          type: "constant"
-          value:
-            type: "boolean"
-            value: true
       - type: "defaultValue"
         value:
           type: "constant"
           value:
             type: "string"
             value: "5480"
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
     isMultiValued: false
   - id: "EAR_FILE"
     label: "EAR_FILE"
@@ -181,15 +110,37 @@ schema:
             type: "string"
             value: "https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/dukesbank-2b.ear"
     isMultiValued: false
-  - id: "db_port"
-    label: "db_port"
+  - id: "jboss_deploy_component_script"
+    label: "jboss_deploy_component_script"
     description: ""
     dataType:
       type: "primitive"
       typeId: "STRING"
     state:
       dependencies: []
-      facets: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/deploy_component.sh"
+    isMultiValued: false
+  - id: "app_content_server_ip"
+    label: "app_content_server_ip"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: ""
     isMultiValued: false
   - id: "JAR_FILE"
     label: "JAR_FILE"
@@ -207,21 +158,70 @@ schema:
             type: "string"
             value: "https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/mysql.jdbc-5.1.6.jar"
     isMultiValued: false
-  - id: "jboss_deploy_component_script"
-    label: "jboss_deploy_component_script"
+  - id: "db_user"
+    label: "db_user"
     description: ""
     dataType:
       type: "primitive"
       typeId: "STRING"
     state:
       dependencies: []
+      facets: []
+    isMultiValued: false
+  - id: "host"
+    label: ""
+    description: ""
+    dataType:
+      type: "ref"
+      componentTypeId: "com.vmware.csp.component.software.service"
+      classId: "softwareResourceType"
+      typeFilter: "Software.JBossAppServer"
+      label: "JBossAppServer"
+    state:
+      dependencies: []
       facets:
-      - type: "defaultValue"
+      - type: "visible"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: false
+      - type: "mandatory"
         value:
           type: "constant"
           value:
-            type: "string"
-            value: "https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/deploy_component.sh"
+            type: "boolean"
+            value: true
+    isMultiValued: false
+  - id: "db_port"
+    label: "db_port"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets: []
+    isMultiValued: false
+  - id: "db_host"
+    label: "db_host"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets: []
+    isMultiValued: false
+  - id: "db_password"
+    label: "db_password"
+    description: ""
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets: []
     isMultiValued: false
   - id: "dukes_db"
     label: "dukes_db"
@@ -235,8 +235,8 @@ schema:
     isMultiValued: false
 containerFieldId: "host"
 lifecycleTasks:
-- createdDate: "2015-10-02T18:28:17.234Z"
-  lastUpdated: "2015-10-02T20:20:43.063Z"
+- createdDate: "2016-03-13T22:57:11.009Z"
+  lastUpdated: "2016-03-14T02:41:01.779Z"
   script:
     scriptContent: "#!/bin/bash\nPATH=$PATH:/sbin:/usr/sbin:$JAVA_HOME/bin\n\nTESTJAVA=$(java\
       \ -version 2>&1)\n\nif [[ \"${TESTJAVA}\" == *\"command not found\"* ]] ; then\n\

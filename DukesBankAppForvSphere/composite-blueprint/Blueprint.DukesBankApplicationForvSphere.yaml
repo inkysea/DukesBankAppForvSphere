@@ -1,12 +1,22 @@
-id: Blueprint.DukesBankApplicationForvSpherev1
+id: Blueprint.DukesBankApplicationForvSphere
 name: Dukes Bank Application For vSphere
 description: Three-tier Dukes Bank application on Linux nodes for vSphere; Apache HTTP Server for load balancer, JBoss Server for application server, and MySQL Server for database server. This is the basic version of Dukes Bank on Linux nodes.
 status: PUBLISHED
+properties:
+  __nsx.management_endpoint_name:
+    fixed: vCenter
+    secured: false
+    visible: false
+  __nsx.transport_zone_name:
+    fixed: NSXTransport
+    secured: false
+    visible: false
 components:
   ApacheLB_1:
     type: Software.ApacheLB
     dependsOn:
     - DukesBankApp_1
+    - centos_yum_repo_1
     data:
       JAVA_HOME:
         default: /opt/vmware-jre
@@ -17,10 +27,8 @@ components:
         required: true
       autogen_sticky_cookie: 'NO'
       config_httpd_conf:
-        default: /etc/httpd/conf/httpd.conf
         fixed: /etc/httpd/conf/httpd.conf
       config_static_site:
-        default: /var/www/html
         fixed: /var/www/html
       host: ${_resource~loadbalancer-node}
       http_node_ips:
@@ -29,37 +37,59 @@ components:
       http_node_port:
         fixed: ${_resource~JBossAppServer_1~JBOSS_PORT_NUMBER}
         required: true
-      http_port: '80'
+      http_port: '8081'
       http_proxy_port:
-        default: '8081'
+        default: '80'
         required: true
       httpd_dir:
-        default: /etc/httpd
         fixed: /etc/httpd
       service_restart:
-        default: service httpd restart
         fixed: service httpd restart
       service_start:
-        default: service httpd start
         fixed: service httpd start
       service_stop:
-        default: service httpd stop
         fixed: service httpd stop
       tomcat_context: {}
       use_ajp:
         default: 'NO'
         required: true
+  App:
+    type: Infrastructure.Network.Network.NSX.OnDemand.Routed
+    data:
+      dns:
+        fixed:
+          dns_search_suffix: inkysea.com,inkysea.local
+          dns_suffix: inkysea.com
+          primary_dns: 10.25.27.1
+      name:
+        fixed: App
+      parent_network_profile:
+        fixed: NSX Routed
+  DB:
+    type: Infrastructure.Network.Network.NSX.OnDemand.Routed
+    data:
+      dns:
+        fixed:
+          dns_search_suffix: inkysea.com,inkysea.local
+          dns_suffix: inkysea.com
+          primary_dns: 10.25.27.1
+      name:
+        fixed: DB
+      parent_network_profile:
+        fixed: NSX Routed
   DukesBankApp_1:
     type: Software.DukesBankApp
     dependsOn:
     - DukesBankDBSetup_1
     data:
+      APPD_SCRIPT: ''
       EAR_FILE: https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/dukesbank-2b.ear
       JAR_FILE: https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/mysql.jdbc-5.1.6.jar
       JAVA_HOME:
         fixed: ${JBossAppServer_1~JAVA_HOME}
       JBOSS_DATASOURCE_TEMPLATE: https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/jboss-ds.xml.tmpl
       app_content_server_ip:
+        default: vra-app-1.inkysea.com
         required: true
         visible: true
       app_content_server_port:
@@ -86,7 +116,7 @@ components:
         default: dukes_db
         required: true
       db_password:
-        default: Passw0rd
+        default: ''
         required: true
         secured: true
       db_username:
@@ -94,7 +124,7 @@ components:
         required: true
       host: ${_resource~MySql_1}
       init_db_password:
-        default: Passw0rd
+        default: ''
         required: true
         secured: true
       init_db_username:
@@ -102,6 +132,8 @@ components:
         required: true
   JBossAppServer_1:
     type: Software.JBossAppServer
+    dependsOn:
+    - centos_yum_repo_2
     data:
       Install_Path: ''
       JAVA_HOME:
@@ -111,7 +143,7 @@ components:
       JBOSS_INSTANCE_NAME: default
       JBOSS_JMX_CONSOLE_USERS_TEMPLATE: https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/jmx-console-users.properties.tmpl
       JBOSS_JMX_PWD:
-        default: Passw0rd
+        default: ''
         secured: true
       JBOSS_JMX_USER: admin
       JBOSS_NAME_AND_VERSION: jboss-5.1.0.GA
@@ -120,6 +152,7 @@ components:
         required: true
       JVM_ROUTE: '0'
       app_content_server_ip:
+        default: vra-app-1.inkysea.com
         required: true
         visible: true
       app_content_server_port:
@@ -132,8 +165,22 @@ components:
       jboss_configure_script: https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/configure.sh
       jboss_install_script: https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/install.sh
       zip_url: https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/jboss-5.1.0.GA.zip
+  LB:
+    type: Infrastructure.Network.Network.NSX.OnDemand.Routed
+    data:
+      dns:
+        fixed:
+          dns_search_suffix: inkysea.com,inkysea.local
+          dns_suffix: inkysea.com
+          primary_dns: 10.25.27.1
+      name:
+        fixed: LB
+      parent_network_profile:
+        fixed: NSX Routed
   MySql_1:
     type: Software.MySql
+    dependsOn:
+    - centos_yum_repo_3
     data:
       JAVA_HOME:
         default: /opt/vmware-jre
@@ -142,7 +189,7 @@ components:
         default: '3306'
         required: true
       db_root_password:
-        default: Passw0rd
+        default: ''
         required: true
         secured: true
       db_root_username:
@@ -152,6 +199,49 @@ components:
       global_http_proxy: {}
       global_https_proxy: {}
       host: ${_resource~database-node}
+  NSXLB:
+    type: Infrastructure.Network.LoadBalancer.NSX.OnDemand
+    data:
+      name:
+        fixed: NSXLB
+      services:
+        fixed:
+        - health_check_interval: 5
+          health_threshold: 5
+          id: HTTP
+          isSelected: true
+          name: HTTP
+          port: 80
+          response_timeout: 5
+          service_URI: ''
+          unhealth_threshold: 10
+        - health_check_interval: 5
+          health_threshold: 5
+          id: HTTPS
+          isSelected: true
+          name: HTTPS
+          port: 443
+          response_timeout: 5
+          service_URI: ''
+          unhealth_threshold: 10
+      tier:
+        fixed: ${_resource~loadbalancer-node}
+      tier_nic_index:
+        fixed: 0
+      vip_network:
+        fixed: ${_resource~Web}
+  Web:
+    type: Infrastructure.Network.Network.NSX.OnDemand.Routed
+    data:
+      dns:
+        fixed:
+          dns_search_suffix: inkysea.com,inkysea.local
+          dns_suffix: inkysea.com
+          primary_dns: 10.25.27.1
+      name:
+        fixed: Web
+      parent_network_profile:
+        fixed: NSX Routed
   appserver-node:
     type: Infrastructure.CatalogItem.Machine.Virtual.vSphere
     data:
@@ -159,139 +249,257 @@ components:
         default: 1
         max: 10
         min: 1
-      action: FullClone
-      allow_storage_policies: false
-      blueprint_type: '0'
+      action:
+        fixed: LinkedClone
+      allow_storage_policies:
+        fixed: false
+      blueprint_type:
+        fixed: '0'
       cpu:
         default: 1
+        max: 1
         min: 1
       disks:
-      - capacity: 5
-        id: -1
+      - capacity: 80
+        custom_properties: null
+        id: 1458086762968
         initial_location: ''
         is_clone: true
         label: Hard disk 1
         storage_reservation_policy: ''
         userCreated: false
-        volumeId: 1
-      display_location: false
+        volumeId: 0
+      display_location:
+        fixed: false
+      guest_customization_specification: Linux
       machine_actions:
         default: ''
+        required: false
         secured: false
         visible: false
-      machine_prefix:
-        id: Use group default
       max_network_adapters: {}
       max_volumes: {}
       memory:
-        default: 2048
-        min: 2048
-      nics: []
+        default: 1024
+        max: 2048
+        min: 1024
+      nics:
+      - address: ''
+        assignment_type: Static
+        id: 0
+        load_balancing: ''
+        network: ${_resource~App}
+        network_profile: NSX Routed
+      osfamily:
+        default: LINUX
+        required: false
+        secured: false
+        visible: false
       property_groups: {}
       provisioning_workflow:
-        id: CloneWorkflow
-        label: CloneWorkflow
+        fixed:
+          id: CloneWorkflow
+          label: CloneWorkflow
       security_groups: []
       security_tags: []
-      source_machine_name: CHANGE_ME
+      source_machine:
+        fixed:
+          id: 390406ac-457d-420f-8df8-a6077e63125f
+          label: centos7_vra
+      source_machine_external_snapshot:
+        fixed: 1
+      source_machine_name:
+        fixed: centos7_vra
+      source_machine_vmsnapshot:
+        fixed:
+          id: '9'
       storage:
-        default: 5
-        min: 5
+        default: 80
+        max: 80
+        min: 80
+  centos_yum_repo_1:
+    type: Software.centosyumrepo
+    data:
+      host:
+        fixed: ${_resource~loadbalancer-node}
+      repoURL: https\:\/\/vra-app-1\.inkysea\.com\/artifactory\/list/
+  centos_yum_repo_2:
+    type: Software.centosyumrepo
+    data:
+      host:
+        fixed: ${_resource~appserver-node}
+      repoURL: https\:\/\/vra-app-1\.inkysea\.com\/artifactory\/list/
+  centos_yum_repo_3:
+    type: Software.centosyumrepo
+    data:
+      host:
+        fixed: ${_resource~database-node}
+      repoURL: https\:\/\/vra-app-1\.inkysea\.com\/artifactory\/list/
   database-node:
     type: Infrastructure.CatalogItem.Machine.Virtual.vSphere
     data:
       _cluster:
         default: 1
+        max: 1
         min: 1
-      action: FullClone
-      allow_storage_policies: false
-      blueprint_type: '0'
+      action:
+        fixed: LinkedClone
+      allow_storage_policies:
+        fixed: false
+      blueprint_type:
+        fixed: '0'
       cpu:
         default: 1
+        max: 1
         min: 1
       description: DB for Dukes Bank application
       disks:
-      - capacity: 5
-        id: -1
+      - capacity: 80
+        custom_properties: null
+        id: 1458086797683
         initial_location: ''
         is_clone: true
         label: Hard disk 1
         storage_reservation_policy: ''
         userCreated: false
-        volumeId: 1
-      display_location: false
+        volumeId: 0
+      display_location:
+        fixed: false
+      guest_customization_specification: Linux
       machine_actions:
         default: ''
+        required: false
         secured: false
         visible: false
-      machine_prefix:
-        id: Use group default
       max_network_adapters: {}
       max_volumes: {}
       memory:
-        default: 2048
-        min: 2048
-      nics: []
+        default: 512
+        max: 2048
+        min: 512
+      nics:
+      - address: ''
+        assignment_type: Static
+        id: 0
+        load_balancing: ''
+        network: ${_resource~DB}
+        network_profile: NSX Routed
+      osfamily:
+        default: LINUX
+        required: false
+        secured: false
+        visible: false
       property_groups: {}
       provisioning_workflow:
-        id: CloneWorkflow
-        label: CloneWorkflow
+        fixed:
+          id: CloneWorkflow
+          label: CloneWorkflow
       security_groups: []
       security_tags: []
-      source_machine_name: CHANGE_ME
+      source_machine:
+        fixed:
+          id: 390406ac-457d-420f-8df8-a6077e63125f
+          label: centos7_vra
+      source_machine_external_snapshot:
+        fixed: 1
+      source_machine_name:
+        fixed: centos7_vra
+      source_machine_vmsnapshot:
+        fixed:
+          id: '9'
       storage:
-        default: 5
-        min: 5
+        default: 80
+        max: 80
+        min: 80
   loadbalancer-node:
     type: Infrastructure.CatalogItem.Machine.Virtual.vSphere
     data:
       _cluster:
         default: 1
+        max: 1
         min: 1
-      action: FullClone
-      allow_storage_policies: false
-      blueprint_type: '0'
+      action:
+        fixed: LinkedClone
+      allow_storage_policies:
+        fixed: false
+      blueprint_type:
+        fixed: '0'
       cpu:
         default: 1
+        max: 1
         min: 1
       disks:
-      - capacity: 5
-        id: -1
+      - capacity: 80
+        custom_properties: null
+        id: 1458086735614
         initial_location: ''
         is_clone: true
         label: Hard disk 1
         storage_reservation_policy: ''
         userCreated: false
-        volumeId: 1
-      display_location: false
+        volumeId: 0
+      display_location:
+        fixed: false
+      guest_customization_specification: Linux
       machine_actions:
         default: ''
+        required: false
         secured: false
         visible: false
-      machine_prefix:
-        id: Use group default
       max_network_adapters: {}
       max_volumes: {}
       memory:
-        default: 2048
-        min: 2048
-      nics: []
+        default: 256
+        max: 2048
+        min: 256
+      nics:
+      - address: ''
+        assignment_type: Static
+        id: 0
+        load_balancing: HTTP,HTTPS
+        network: ${_resource~Web}
+        network_profile: NSX Routed
+      osfamily:
+        default: LINUX
+        required: false
+        secured: false
+        visible: false
       property_groups: {}
       provisioning_workflow:
-        id: CloneWorkflow
-        label: CloneWorkflow
+        fixed:
+          id: CloneWorkflow
+          label: CloneWorkflow
       security_groups: []
       security_tags: []
-      source_machine_name: CHANGE_ME
+      source_machine:
+        fixed:
+          id: 390406ac-457d-420f-8df8-a6077e63125f
+          label: centos7_vra
+      source_machine_external_snapshot:
+        fixed: 1
+      source_machine_name:
+        fixed: centos7_vra
+      source_machine_vmsnapshot:
+        fixed:
+          id: '9'
       storage:
-        default: 5
-        min: 5
+        default: 80
+        max: 80
+        min: 80
 layout:
   ApacheLB_1: 0,0
+  App: 2,0
+  DB: 3,0
   DukesBankApp_1: 0,0
   DukesBankDBSetup_1: 0,0
   JBossAppServer_1: 0,0
+  LB: 4,0
   MySql_1: 0,0
-  appserver-node: 0,1
-  database-node: 0,2
-  loadbalancer-node: 0,0
+  NSXLB: 0,0
+  Web: 1,0
+  appserver-node: 0,2
+  centos_yum_repo_1: 1,0
+  centos_yum_repo_2: 1,0
+  centos_yum_repo_3: 1,0
+  database-node: 0,3
+  loadbalancer-node: 0,1

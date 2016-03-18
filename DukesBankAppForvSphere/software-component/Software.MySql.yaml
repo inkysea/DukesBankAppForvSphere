@@ -1,6 +1,6 @@
 '@type': "SoftwareComponentType"
-createdDate: "2015-10-01T18:11:04.424Z"
-lastUpdated: "2015-10-02T20:26:17.553Z"
+createdDate: "2016-03-05T02:30:00.286Z"
+lastUpdated: "2016-03-16T00:46:18.373Z"
 id: "Software.MySql"
 name: "MySQL Database"
 description: "MySQL installation and configuration 123."
@@ -8,6 +8,34 @@ publishStatus: "PUBLISHED"
 publishStatusName: "Published"
 schema:
   fields:
+  - id: "db_root_password"
+    label: "db_root_password"
+    description: "Database root user password"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "secureString"
+            value: ""
+      - type: "encrypted"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
   - id: "db_root_username"
     label: "db_root_username"
     description: "Database root user name"
@@ -30,6 +58,16 @@ schema:
             type: "boolean"
             value: true
     isMultiValued: false
+  - id: "global_ftp_proxy"
+    label: "global_ftp_proxy"
+    description: "FTP proxy URL, if any. Not a mandate."
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets: []
+    isMultiValued: false
   - id: "host"
     label: ""
     description: ""
@@ -41,18 +79,24 @@ schema:
     state:
       dependencies: []
       facets:
-      - type: "mandatory"
-        value:
-          type: "constant"
-          value:
-            type: "boolean"
-            value: true
       - type: "visible"
         value:
           type: "constant"
           value:
             type: "boolean"
             value: false
+      - type: "internal"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: true
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
     isMultiValued: false
   - id: "JAVA_HOME"
     label: "JAVA_HOME"
@@ -76,9 +120,9 @@ schema:
             type: "boolean"
             value: true
     isMultiValued: false
-  - id: "global_ftp_proxy"
-    label: "global_ftp_proxy"
-    description: "FTP proxy URL, if any. Not a mandate."
+  - id: "global_https_proxy"
+    label: "global_https_proxy"
+    description: "HTTPS proxy URL, if any. Not a mandate."
     dataType:
       type: "primitive"
       typeId: "STRING"
@@ -108,34 +152,6 @@ schema:
             type: "boolean"
             value: true
     isMultiValued: false
-  - id: "db_root_password"
-    label: "db_root_password"
-    description: "Database root user password"
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets:
-      - type: "defaultValue"
-        value:
-          type: "constant"
-          value:
-            type: "string"
-            value: "Passw0rd"
-      - type: "encrypted"
-        value:
-          type: "constant"
-          value:
-            type: "boolean"
-            value: true
-      - type: "mandatory"
-        value:
-          type: "constant"
-          value:
-            type: "boolean"
-            value: true
-    isMultiValued: false
   - id: "global_http_proxy"
     label: "global_http_proxy"
     description: "HTTP proxy URL, if any. Not a mandate."
@@ -146,20 +162,10 @@ schema:
       dependencies: []
       facets: []
     isMultiValued: false
-  - id: "global_https_proxy"
-    label: "global_https_proxy"
-    description: "HTTPS proxy URL, if any. Not a mandate."
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets: []
-    isMultiValued: false
 containerFieldId: "host"
 lifecycleTasks:
-- createdDate: "2015-10-01T18:11:04.440Z"
-  lastUpdated: "2015-10-02T20:26:17.553Z"
+- createdDate: "2016-03-05T03:41:56.991Z"
+  lastUpdated: "2016-03-16T04:11:26.062Z"
   script:
     scriptContent: "#!/bin/bash\n\n#Setting proxies\nexport ftp_proxy=${ftp_proxy:-$global_ftp_proxy}\n\
       echo \"Setting ftp_proxy to $ftp_proxy\"\n\nexport http_proxy=${http_proxy:-$global_http_proxy}\n\
@@ -201,8 +207,8 @@ lifecycleTasks:
   taskDescriptorRef:
     id: "CONFIGURE"
     label: "Configure"
-- createdDate: "2015-10-01T18:11:04.461Z"
-  lastUpdated: "2015-10-02T20:26:17.553Z"
+- createdDate: "2016-03-05T03:41:56.991Z"
+  lastUpdated: "2016-03-16T04:11:26.062Z"
   script:
     scriptContent: "#!/bin/bash\n\n#Setting proxies\nexport ftp_proxy=${ftp_proxy:-$global_ftp_proxy}\n\
       echo \"Setting ftp_proxy to $ftp_proxy\"\n\nexport http_proxy=${http_proxy:-$global_http_proxy}\n\
@@ -233,11 +239,17 @@ lifecycleTasks:
       \ \"x\" ] && [ \"$OS\" = 'Ubuntu' ]; then\n    # Fix the linux-firmware package\
       \ \n    export DEBIAN_FRONTEND=noninteractive\n    apt-get install -y linux-firmware\
       \ < /dev/console > /dev/console \n    # Install MySQL package \n    apt-get\
-      \ install -y mysql-server\nelse \n    yum --nogpgcheck --noplugins -y install\
-      \ -x MySQL-server-community mysql-server\nfi\n\n# Set Install Path to the default\
-      \ install path (For monitoring)\nInstall_Path=/usr\necho Install_Path is set\
-      \ to $Install_Path, please modify this script if the install path is not correct.\n\
-      \                \n            "
+      \ install -y mysql-server\nelse \n    wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm\n\
+      \    rpm -ifvh mysql-community-release-el7-5.noarch.rpm\n    sed -i -e  's/baseurl\\\
+      =http\\:\\/\\/repo\\.mysql\\.com/baseurl\\=https\\:\\/\\/vra-app-1\\.inkysea\\\
+      .com\\/artifactory\\/list\\/mysql/g' /etc/yum.repos.d/mysql-community.repo\n\
+      \    sed -i -e  's/baseurl\\=http\\:\\/\\/repo\\.mysql\\.com/baseurl\\=https\\\
+      :\\/\\/vra-app-1\\.inkysea\\.com\\/artifactory\\/list\\/mysql/g' /etc/yum.repos.d/mysql-community-source.repo\n\
+      \    echo \"running yum\"\n    yum -y update --skip-broken\n    yum --nogpgcheck\
+      \ --noplugins -y install -x MySQL-server-community mysql-server\nfi\n\n# Set\
+      \ Install Path to the default install path (For monitoring)\nInstall_Path=/usr\n\
+      echo Install_Path is set to $Install_Path, please modify this script if the\
+      \ install path is not correct.\n                \n            "
     isRebootAfter: false
     scriptTypeId: "Bash"
   taskDescriptorRef:
