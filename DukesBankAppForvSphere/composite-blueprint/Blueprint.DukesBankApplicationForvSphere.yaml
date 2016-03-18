@@ -165,6 +165,18 @@ components:
       jboss_configure_script: https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/configure.sh
       jboss_install_script: https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/install.sh
       zip_url: https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/jboss-5.1.0.GA.zip
+  LB:
+    type: Infrastructure.Network.Network.NSX.OnDemand.Routed
+    data:
+      dns:
+        fixed:
+          dns_search_suffix: inkysea.com,inkysea.local
+          dns_suffix: inkysea.com
+          primary_dns: 10.25.27.1
+      name:
+        fixed: LB
+      parent_network_profile:
+        fixed: NSX Routed
   MySql_1:
     type: Software.MySql
     dependsOn:
