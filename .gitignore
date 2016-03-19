@@ -3,3 +3,7 @@
 .idea
 
 *.iml
+
+
+dukesbank/build
+dukesbank/dist
