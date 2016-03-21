@@ -152,6 +152,34 @@ schema:
             type: "boolean"
             value: true
     isMultiValued: false
+  - id: "db_root_password"
+    label: "db_root_password"
+    description: "Database root user password"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "Passw0rd"
+      - type: "encrypted"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
   - id: "global_http_proxy"
     label: "global_http_proxy"
     description: "HTTP proxy URL, if any. Not a mandate."
