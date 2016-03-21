@@ -15,7 +15,6 @@ components:
   ApacheLB_1:
     type: Software.ApacheLB
     dependsOn:
-    - DukesBankApp_1
     - centos_yum_repo_1
     data:
       JAVA_HOME:
