@@ -1,0 +1,314 @@
+id: Blueprint.DukesBankApplicationForvSphere
+name: Dukes Bank Application For vSphere
+description: Three-tier Dukes Bank application on Linux nodes for vSphere; Apache HTTP Server for load balancer, JBoss Server for application server, and MySQL Server for database server. This is the basic version of Dukes Bank on Linux nodes.
+status: PUBLISHED
+components:
+  ApacheLB_1:
+    type: Software.ApacheLB
+    dependsOn:
+    - DukesBankApp_1
+    data:
+      JAVA_HOME:
+        default: /opt/vmware-jre
+        required: true
+      ajp_proxy_context: {}
+      appsrv_routes:
+        fixed: ${_resource~JBossAppServer_1~JVM_ROUTE}
+        required: true
+      autogen_sticky_cookie: 'NO'
+      config_httpd_conf:
+        default: /etc/httpd/conf/httpd.conf
+        fixed: /etc/httpd/conf/httpd.conf
+      config_static_site:
+        default: /var/www/html
+        fixed: /var/www/html
+      host:
+        fixed: ${_resource~loadbalancer-node}
+      http_node_ips:
+        fixed: ${_resource~appserver-node~ip_address}
+        required: true
+      http_node_port:
+        fixed: ${_resource~JBossAppServer_1~JBOSS_PORT_NUMBER}
+        required: true
+      http_port: '80'
+      http_proxy_port:
+        default: '8081'
+        required: true
+      httpd_dir:
+        default: /etc/httpd
+        fixed: /etc/httpd
+      service_restart:
+        default: service httpd restart
+        fixed: service httpd restart
+      service_start:
+        default: service httpd start
+        fixed: service httpd start
+      service_stop:
+        default: service httpd stop
+        fixed: service httpd stop
+      tomcat_context: {}
+      use_ajp:
+        default: 'NO'
+        required: true
+  DukesBankApp_1:
+    type: Software.DukesBankApp
+    dependsOn:
+    - DukesBankDBSetup_1
+    data:
+      EAR_FILE: https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/dukesbank-2b.ear
+      JAR_FILE: https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/mysql.jdbc-5.1.6.jar
+      JAVA_HOME:
+        fixed: ${JBossAppServer_1~JAVA_HOME}
+      JBOSS_DATASOURCE_TEMPLATE: https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/jboss-ds.xml.tmpl
+      app_content_server_ip:
+        required: true
+        visible: true
+      app_content_server_port:
+        default: '5480'
+        required: true
+        visible: true
+      db_host:
+        fixed: ${_resource~database-node~ip_address}
+      db_password:
+        fixed: ${DukesBankDBSetup_1~db_password}
+      db_port:
+        fixed: ${MySql_1~db_port}
+      db_user:
+        fixed: ${DukesBankDBSetup_1~db_username}
+      dukes_db:
+        fixed: ${DukesBankDBSetup_1~db_name}
+      host:
+        fixed: ${_resource~JBossAppServer_1}
+      jboss_deploy_component_script: https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/deploy_component.sh
+      jboss_deploy_datasource_script: https://$app_content_server_ip:$app_content_server_port/artifacts/blueprint/dukesbank/deploy_datasource.sh
+  DukesBankDBSetup_1:
+    type: Software.DukesBankDBSetup
+    data:
+      db_name:
+        default: dukes_db
+        required: true
+      db_password:
+        default: Passw0rd
+        required: true
+        secured: true
+      db_username:
+        default: dukes_admin
+        required: true
+      host:
+        fixed: ${_resource~MySql_1}
+      init_db_password:
+        default: Passw0rd
+        required: true
+        secured: true
+      init_db_username:
+        default: root
+        required: true
+  JBossAppServer_1:
+    type: Software.JBossAppServer
+    data:
+      Install_Path: ''
+      JAVA_HOME:
+        default: /opt/vmware-jre
+        required: true
+      JBOSS_BOOTRC_TEMPLATE: https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/boot.rc.tmpl
+      JBOSS_INSTANCE_NAME: default
+      JBOSS_JMX_CONSOLE_USERS_TEMPLATE: https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/jmx-console-users.properties.tmpl
+      JBOSS_JMX_PWD:
+        default: Passw0rd
+        secured: true
+      JBOSS_JMX_USER: admin
+      JBOSS_NAME_AND_VERSION: jboss-5.1.0.GA
+      JBOSS_PORT_NUMBER:
+        default: '8080'
+        required: true
+      JVM_ROUTE: '0'
+      app_content_server_ip:
+        required: true
+        visible: true
+      app_content_server_port:
+        default: '5480'
+        required: true
+        visible: true
+      cheetah_install_script: https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/cheetah_install.sh
+      cheetah_tgz_url: https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/cheetah-2.4.4.tar.gz
+      host:
+        fixed: ${_resource~appserver-node}
+      jboss_configure_script: https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/configure.sh
+      jboss_install_script: https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/install.sh
+      zip_url: https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/jboss-5.1.0.GA.zip
+  MySql_1:
+    type: Software.MySql
+    data:
+      JAVA_HOME:
+        default: /opt/vmware-jre
+        required: true
+      db_port:
+        default: '3306'
+        required: true
+      db_root_password:
+        default: Passw0rd
+        required: true
+        secured: true
+      db_root_username:
+        default: root
+        required: true
+      global_ftp_proxy: {}
+      global_http_proxy: {}
+      global_https_proxy: {}
+      host:
+        fixed: ${_resource~database-node}
+  appserver-node:
+    type: Infrastructure.CatalogItem.Machine.Virtual.vSphere
+    data:
+      _cluster:
+        default: 1
+        max: 10
+        min: 1
+      action:
+        fixed: FullClone
+      allow_storage_policies:
+        fixed: false
+      blueprint_type:
+        fixed: '0'
+      cpu:
+        default: 1
+        min: 1
+      disks:
+      - capacity: 5
+        id: -1
+        initial_location: ''
+        is_clone: true
+        label: Hard disk 1
+        storage_reservation_policy: ''
+        userCreated: false
+        volumeId: 1
+      display_location: false
+      machine_actions:
+        default: ''
+        secured: false
+        visible: false
+      machine_prefix:
+        id: Use group default
+      max_network_adapters: {}
+      max_volumes: {}
+      memory:
+        default: 2048
+        min: 2048
+      nics: []
+      property_groups: {}
+      provisioning_workflow:
+        fixed:
+          id: CloneWorkflow
+          label: CloneWorkflow
+      security_groups: []
+      security_tags: []
+      source_machine_name: CHANGE_ME
+      storage:
+        default: 5
+        min: 5
+  database-node:
+    type: Infrastructure.CatalogItem.Machine.Virtual.vSphere
+    data:
+      _cluster:
+        default: 1
+        min: 1
+      action:
+        fixed: FullClone
+      allow_storage_policies:
+        fixed: false
+      blueprint_type:
+        fixed: '0'
+      cpu:
+        default: 1
+        min: 1
+      description: DB for Dukes Bank application
+      disks:
+      - capacity: 5
+        id: -1
+        initial_location: ''
+        is_clone: true
+        label: Hard disk 1
+        storage_reservation_policy: ''
+        userCreated: false
+        volumeId: 1
+      display_location: false
+      machine_actions:
+        default: ''
+        secured: false
+        visible: false
+      machine_prefix:
+        id: Use group default
+      max_network_adapters: {}
+      max_volumes: {}
+      memory:
+        default: 2048
+        min: 2048
+      nics: []
+      property_groups: {}
+      provisioning_workflow:
+        fixed:
+          id: CloneWorkflow
+          label: CloneWorkflow
+      security_groups: []
+      security_tags: []
+      source_machine_name: CHANGE_ME
+      storage:
+        default: 5
+        min: 5
+  loadbalancer-node:
+    type: Infrastructure.CatalogItem.Machine.Virtual.vSphere
+    data:
+      _cluster:
+        default: 1
+        min: 1
+      action:
+        fixed: FullClone
+      allow_storage_policies:
+        fixed: false
+      blueprint_type:
+        fixed: '0'
+      cpu:
+        default: 1
+        min: 1
+      disks:
+      - capacity: 5
+        id: -1
+        initial_location: ''
+        is_clone: true
+        label: Hard disk 1
+        storage_reservation_policy: ''
+        userCreated: false
+        volumeId: 1
+      display_location: false
+      machine_actions:
+        default: ''
+        secured: false
+        visible: false
+      machine_prefix:
+        id: Use group default
+      max_network_adapters: {}
+      max_volumes: {}
+      memory:
+        default: 2048
+        min: 2048
+      nics: []
+      property_groups: {}
+      provisioning_workflow:
+        fixed:
+          id: CloneWorkflow
+          label: CloneWorkflow
+      security_groups: []
+      security_tags: []
+      source_machine_name: CHANGE_ME
+      storage:
+        default: 5
+        min: 5
+layout:
+  ApacheLB_1: 0,0
+  DukesBankApp_1: 0,0
+  DukesBankDBSetup_1: 0,0
+  JBossAppServer_1: 0,0
+  MySql_1: 0,0
+  appserver-node: 0,1
+  database-node: 0,2
+  loadbalancer-node: 0,0
