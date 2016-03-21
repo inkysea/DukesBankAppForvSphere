@@ -188,7 +188,7 @@ components:
         default: '3306'
         required: true
       db_root_password:
-        default: ''
+        default: Passw0rd
         required: true
         secured: true
       db_root_username:
