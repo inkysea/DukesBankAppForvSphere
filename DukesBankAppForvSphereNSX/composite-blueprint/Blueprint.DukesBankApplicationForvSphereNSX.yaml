@@ -116,7 +116,7 @@ components:
         default: dukes_db
         required: true
       db_password:
-        default: ''
+        default: Passw0rd
         required: true
         secured: true
       db_username:
@@ -124,7 +124,7 @@ components:
         required: true
       host: ${_resource~MySql_1}
       init_db_password:
-        default: ''
+        default: Passw0rd
         required: true
         secured: true
       init_db_username:

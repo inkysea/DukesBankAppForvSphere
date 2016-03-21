@@ -34,7 +34,7 @@ schema:
           type: "constant"
           value:
             type: "secureString"
-            value: ""
+            value: "Passw0rd"
     isMultiValued: false
   - id: "db_root_username"
     label: "db_root_username"
