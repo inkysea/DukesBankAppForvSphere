@@ -113,7 +113,7 @@ schema:
           type: "constant"
           value:
             type: "secureString"
-            value: ""
+            value: "Passw0rd"
       - type: "encrypted"
         value:
           type: "constant"
@@ -141,7 +141,7 @@ schema:
           type: "constant"
           value:
             type: "secureString"
-            value: ""
+            value: "Passw0rd"
       - type: "encrypted"
         value:
           type: "constant"

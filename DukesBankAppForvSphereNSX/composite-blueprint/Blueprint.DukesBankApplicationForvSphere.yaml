@@ -1,4 +1,4 @@
-id: Blueprint.DukesBankApplicationForvSphere
+id: Blueprint.DukesBankApplicationForvSphereNSX
 name: Dukes Bank Application For vSphere
 description: Three-tier Dukes Bank application on Linux nodes for vSphere; Apache HTTP Server for load balancer, JBoss Server for application server, and MySQL Server for database server. This is the basic version of Dukes Bank on Linux nodes.
 status: PUBLISHED
@@ -116,7 +116,7 @@ components:
         default: dukes_db
         required: true
       db_password:
-        default: ''
+        default: Passw0rd
         required: true
         secured: true
       db_username:
@@ -124,7 +124,7 @@ components:
         required: true
       host: ${_resource~MySql_1}
       init_db_password:
-        default: ''
+        default: Passw0rd
         required: true
         secured: true
       init_db_username:
@@ -143,7 +143,7 @@ components:
       JBOSS_INSTANCE_NAME: default
       JBOSS_JMX_CONSOLE_USERS_TEMPLATE: https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/jmx-console-users.properties.tmpl
       JBOSS_JMX_PWD:
-        default: ''
+        default: Passw0rd
         secured: true
       JBOSS_JMX_USER: admin
       JBOSS_NAME_AND_VERSION: jboss-5.1.0.GA
@@ -189,7 +189,7 @@ components:
         default: '3306'
         required: true
       db_root_password:
-        default: ''
+        default: Passw0rd
         required: true
         secured: true
       db_root_username:
