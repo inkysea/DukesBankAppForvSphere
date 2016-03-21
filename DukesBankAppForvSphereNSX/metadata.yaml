@@ -2,7 +2,7 @@ name: "auto-generated-pkg-906cca07-d254-4890-9969-511727f9a322"
 productVersion: "7.0.1-SNAPSHOT"
 data:
 - locator: "composite-blueprint/Blueprint.DukesBankApplicationForvSphere.yaml"
-  name: "Dukes Bank Application For vSphere"
+  name: "Dukes Bank Application For vSphere NSX"
   description: "Dukes Bank Application For vSphere"
   dependencies:
   - "software-component/Software.JBossAppServer.yaml"
