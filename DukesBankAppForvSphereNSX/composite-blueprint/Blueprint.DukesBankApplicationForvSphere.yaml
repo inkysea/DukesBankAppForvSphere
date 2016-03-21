@@ -1,5 +1,5 @@
 id: Blueprint.DukesBankApplicationForvSphereNSX
-name: Dukes Bank Application For vSphere
+name: Dukes Bank Application For vSphere NSX
 description: Three-tier Dukes Bank application on Linux nodes for vSphere; Apache HTTP Server for load balancer, JBoss Server for application server, and MySQL Server for database server. This is the basic version of Dukes Bank on Linux nodes.
 status: PUBLISHED
 properties:
