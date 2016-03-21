@@ -33,7 +33,7 @@ schema:
         value:
           type: "constant"
           value:
-            type: "secureString"
+            type: "string"
             value: "Passw0rd"
     isMultiValued: false
   - id: "db_root_username"

@@ -130,7 +130,7 @@ schema:
         value:
           type: "constant"
           value:
-            type: "secureString"
+            type: "string"
             value: "Passw0rd"
     isMultiValued: false
   - id: "db_password"
@@ -158,7 +158,7 @@ schema:
         value:
           type: "constant"
           value:
-            type: "secureString"
+            type: "string"
             value: "Passw0rd"
     isMultiValued: false
 containerFieldId: "host"
