@@ -1,6 +1,6 @@
 '@type': "SoftwareComponentType"
 createdDate: "2016-03-13T22:57:10.472Z"
-lastUpdated: "2016-03-14T02:41:01.227Z"
+lastUpdated: "2016-03-21T17:41:29.111Z"
 id: "Software.DukesBankDBSetup"
 name: "Dukes Bank Database setup"
 description: "Script for Dukes Bank database creation and initialization of data."
@@ -64,15 +64,21 @@ schema:
     state:
       dependencies: []
       facets:
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
       - type: "visible"
         value:
           type: "constant"
           value:
             type: "boolean"
             value: false
-      - type: "mandatory"
+      - type: "internal"
         value:
-          type: "constant"
+          type: "constantClause"
           value:
             type: "boolean"
             value: true
@@ -108,24 +114,24 @@ schema:
     state:
       dependencies: []
       facets:
-      - type: "defaultValue"
-        value:
-          type: "constant"
-          value:
-            type: "secureString"
-            value: "Passw0rd"
-      - type: "encrypted"
-        value:
-          type: "constant"
-          value:
-            type: "boolean"
-            value: true
       - type: "mandatory"
         value:
           type: "constant"
           value:
             type: "boolean"
             value: true
+      - type: "encrypted"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "secureString"
+            value: ""
     isMultiValued: false
   - id: "db_password"
     label: "db_password"
@@ -136,29 +142,29 @@ schema:
     state:
       dependencies: []
       facets:
-      - type: "defaultValue"
-        value:
-          type: "constant"
-          value:
-            type: "secureString"
-            value: "Passw0rd"
-      - type: "encrypted"
-        value:
-          type: "constant"
-          value:
-            type: "boolean"
-            value: true
       - type: "mandatory"
         value:
           type: "constant"
           value:
             type: "boolean"
             value: true
+      - type: "encrypted"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "secureString"
+            value: ""
     isMultiValued: false
 containerFieldId: "host"
 lifecycleTasks:
 - createdDate: "2016-03-13T22:57:10.473Z"
-  lastUpdated: "2016-03-14T02:41:01.227Z"
+  lastUpdated: "2016-03-21T17:41:29.111Z"
   script:
     scriptContent: "#!/bin/bash\nexport PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\n\
       \n#Create database needed for Dukes bank\n\n#Dukes Bank DDL and DML\nINITIALIZE_DB_SCRIPT=/tmp/dukesbank-initiaze.sql\n\

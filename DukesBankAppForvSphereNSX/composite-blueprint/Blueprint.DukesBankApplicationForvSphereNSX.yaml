@@ -116,7 +116,7 @@ components:
         default: dukes_db
         required: true
       db_password:
-        default: Passw0rd
+        default: ''
         required: true
         secured: true
       db_username:
@@ -124,7 +124,7 @@ components:
         required: true
       host: ${_resource~MySql_1}
       init_db_password:
-        default: Passw0rd
+        default: ''
         required: true
         secured: true
       init_db_username:
@@ -143,7 +143,7 @@ components:
       JBOSS_INSTANCE_NAME: default
       JBOSS_JMX_CONSOLE_USERS_TEMPLATE: https://$app_content_server_ip:$app_content_server_port/artifacts/software/jboss/jmx-console-users.properties.tmpl
       JBOSS_JMX_PWD:
-        default: Passw0rd
+        default: ''
         secured: true
       JBOSS_JMX_USER: admin
       JBOSS_NAME_AND_VERSION: jboss-5.1.0.GA
@@ -189,7 +189,7 @@ components:
         default: '3306'
         required: true
       db_root_password:
-        default: Passw0rd
+        default: ''
         required: true
         secured: true
       db_root_username:
@@ -261,7 +261,6 @@ components:
         min: 1
       disks:
       - capacity: 80
-        custom_properties: null
         id: 1458086762968
         initial_location: ''
         is_clone: true
@@ -307,12 +306,12 @@ components:
           id: 390406ac-457d-420f-8df8-a6077e63125f
           label: centos7_vra
       source_machine_external_snapshot:
-        fixed: 1
+        fixed: 2
       source_machine_name:
         fixed: centos7_vra
       source_machine_vmsnapshot:
         fixed:
-          id: '9'
+          id: '13'
       storage:
         default: 80
         max: 80
@@ -355,7 +354,6 @@ components:
       description: DB for Dukes Bank application
       disks:
       - capacity: 80
-        custom_properties: null
         id: 1458086797683
         initial_location: ''
         is_clone: true
@@ -401,12 +399,12 @@ components:
           id: 390406ac-457d-420f-8df8-a6077e63125f
           label: centos7_vra
       source_machine_external_snapshot:
-        fixed: 1
+        fixed: 2
       source_machine_name:
         fixed: centos7_vra
       source_machine_vmsnapshot:
         fixed:
-          id: '9'
+          id: '13'
       storage:
         default: 80
         max: 80
@@ -430,7 +428,6 @@ components:
         min: 1
       disks:
       - capacity: 80
-        custom_properties: null
         id: 1458086735614
         initial_location: ''
         is_clone: true
@@ -476,12 +473,12 @@ components:
           id: 390406ac-457d-420f-8df8-a6077e63125f
           label: centos7_vra
       source_machine_external_snapshot:
-        fixed: 1
+        fixed: 2
       source_machine_name:
         fixed: centos7_vra
       source_machine_vmsnapshot:
         fixed:
-          id: '9'
+          id: '13'
       storage:
         default: 80
         max: 80

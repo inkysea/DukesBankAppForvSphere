@@ -1,6 +1,6 @@
 '@type': "SoftwareComponentType"
 createdDate: "2016-03-05T02:30:00.286Z"
-lastUpdated: "2016-03-16T00:46:18.373Z"
+lastUpdated: "2016-03-21T17:41:28.828Z"
 id: "Software.MySql"
 name: "MySQL Database"
 description: "MySQL installation and configuration 123."
@@ -17,24 +17,24 @@ schema:
     state:
       dependencies: []
       facets:
-      - type: "defaultValue"
-        value:
-          type: "constant"
-          value:
-            type: "secureString"
-            value: "Passw0rd"
-      - type: "encrypted"
-        value:
-          type: "constant"
-          value:
-            type: "boolean"
-            value: true
       - type: "mandatory"
         value:
           type: "constant"
           value:
             type: "boolean"
             value: true
+      - type: "encrypted"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "secureString"
+            value: ""
     isMultiValued: false
   - id: "db_root_username"
     label: "db_root_username"
@@ -79,6 +79,12 @@ schema:
     state:
       dependencies: []
       facets:
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
       - type: "visible"
         value:
           type: "constant"
@@ -88,12 +94,6 @@ schema:
       - type: "internal"
         value:
           type: "constantClause"
-          value:
-            type: "boolean"
-            value: true
-      - type: "mandatory"
-        value:
-          type: "constant"
           value:
             type: "boolean"
             value: true
@@ -152,34 +152,6 @@ schema:
             type: "boolean"
             value: true
     isMultiValued: false
-  - id: "db_root_password"
-    label: "db_root_password"
-    description: "Database root user password"
-    dataType:
-      type: "primitive"
-      typeId: "STRING"
-    state:
-      dependencies: []
-      facets:
-      - type: "defaultValue"
-        value:
-          type: "constant"
-          value:
-            type: "string"
-            value: "Passw0rd"
-      - type: "encrypted"
-        value:
-          type: "constant"
-          value:
-            type: "boolean"
-            value: true
-      - type: "mandatory"
-        value:
-          type: "constant"
-          value:
-            type: "boolean"
-            value: true
-    isMultiValued: false
   - id: "global_http_proxy"
     label: "global_http_proxy"
     description: "HTTP proxy URL, if any. Not a mandate."
@@ -193,50 +165,7 @@ schema:
 containerFieldId: "host"
 lifecycleTasks:
 - createdDate: "2016-03-05T03:41:56.991Z"
-  lastUpdated: "2016-03-16T04:11:26.062Z"
-  script:
-    scriptContent: "#!/bin/bash\n\n#Setting proxies\nexport ftp_proxy=${ftp_proxy:-$global_ftp_proxy}\n\
-      echo \"Setting ftp_proxy to $ftp_proxy\"\n\nexport http_proxy=${http_proxy:-$global_http_proxy}\n\
-      echo \"Setting http_proxy to $http_proxy\"\n\nexport https_proxy=${https_proxy:-$global_https_proxy}\n\
-      echo \"Setting https_proxy to $https_proxy\"\n\n#\n# Determine operating system\
-      \ and version \n#\nexport OS=\nexport OS_VERSION=\n\nif [ -f /etc/redhat-release\
-      \ ]; then\n    # For CentOS the result will be 'CentOS'\n    # For RHEL the\
-      \ result will be 'Red'\n    OS=$(cat /etc/redhat-release | awk {'print $1'})\n\
-      \n    if [ -n $OS ] && [ $OS = 'CentOS' ]; then\n        OS_VERSION=$(cat /etc/redhat-release\
-      \ | awk '{print $3}')\n    else\n        # RHEL\n        OS_VERSION=$(cat /etc/redhat-release\
-      \ | awk '{print $7}')\n    fi\n\nelif [ -f /etc/SuSE-release ]; then\n    OS=SuSE\n\
-      \n    MAJOR_VERSION=$(cat /etc/SuSE-release | grep VERSION | awk '{print $3}')\n\
-      \    PATCHLEVEL=$(cat /etc/SuSE-release | grep PATCHLEVEL | awk '{print $3}')\n\
-      \n    OS_VERSION=\"$MAJOR_VERSION.$PATCHLEVEL\"\n\nelif [ -f /usr/bin/lsb_release\
-      \ ]; then\n    # For Ubuntu the result is 'Ubuntu'\n    OS=$(lsb_release -a\
-      \ 2> /dev/null | grep Distributor | awk '{print $3}')\n    OS_VERSION=$(lsb_release\
-      \ -a 2> /dev/null | grep Release | awk '{print $2}')\n\nfi\n\necho \"Using operating\
-      \ system '$OS' and version '$OS_VERSION'\"\n\nif [ \"x${global_http_proxy}\"\
-      \ == \"x\" ] || [ \"x${global_https_proxy}\" == \"x\" ] ||\n   [ \"x${global_ftp_proxy}\"\
-      \ == \"x\" ]; then\n   echo \"\"\n   echo \"###############################################################\"\
-      \n   echo \"#  One or more PROXY(s) not set. Network downloads may fail   #\"\
-      \n   echo \"###############################################################\"\
-      \n   echo \"\"\nfi\n\nexport PATH=$PATH:$JAVA_HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\n\
-      set -e\n\n# Locate the my.cnf file \nmy_cnf_file=\nif [ -f /etc/my.cnf ]; then\
-      \ \n    my_cnf_file=/etc/my.cnf\nelif [ -f /etc/mysql/my.cnf ]; then \n    my_cnf_file=/etc/mysql/my.cnf\n\
-      fi\n\nif [ \"x$my_cnf_file\" = \"x\" ]; then \n    echo \"Neither /etc/my.cnf\
-      \ nor /etc/mysql/my.cnf can be found, stopping configuration\"\n    exit 1\n\
-      fi\n\n# update mysql configuration to handle big packets\nsed -ie \"s/\\[mysqld\\\
-      ]/\\[mysqld\\]\\n\\\nmax_allowed_packet=$max_allowed_packet/g\" $my_cnf_file\n\
-      # update listening port\nsed -ie \"s/\\[mysqld\\]/\\[mysqld\\]\\n\\\nport=$db_port/g\"\
-      \ $my_cnf_file\n\nsed -i \"s/port.*=.*[0-9]*/port=$db_port/g\" $my_cnf_file\n\
-      \nif [ \"x$OS\" != \"x\" ] && [ \"$OS\" = 'Ubuntu' ]; then\n    # Make sure\
-      \ that MySQL is started \n    service mysql restart\nelse \n    # set up auto-start\
-      \ on booting\n    chkconfig mysqld on\n    # restart mysqld service\n    service\
-      \ mysqld start\nfi\n\n# this will assign a password for mysql admin user 'root'\n\
-      mysqladmin -u $db_root_username password $db_root_password\n                "
-    isRebootAfter: false
-    scriptTypeId: "Bash"
-  taskDescriptorRef:
-    id: "CONFIGURE"
-    label: "Configure"
-- createdDate: "2016-03-05T03:41:56.991Z"
-  lastUpdated: "2016-03-16T04:11:26.062Z"
+  lastUpdated: "2016-03-21T17:41:28.828Z"
   script:
     scriptContent: "#!/bin/bash\n\n#Setting proxies\nexport ftp_proxy=${ftp_proxy:-$global_ftp_proxy}\n\
       echo \"Setting ftp_proxy to $ftp_proxy\"\n\nexport http_proxy=${http_proxy:-$global_http_proxy}\n\
@@ -283,3 +212,46 @@ lifecycleTasks:
   taskDescriptorRef:
     id: "INSTALL"
     label: "Install"
+- createdDate: "2016-03-05T03:41:56.991Z"
+  lastUpdated: "2016-03-21T17:41:28.828Z"
+  script:
+    scriptContent: "#!/bin/bash\n\n#Setting proxies\nexport ftp_proxy=${ftp_proxy:-$global_ftp_proxy}\n\
+      echo \"Setting ftp_proxy to $ftp_proxy\"\n\nexport http_proxy=${http_proxy:-$global_http_proxy}\n\
+      echo \"Setting http_proxy to $http_proxy\"\n\nexport https_proxy=${https_proxy:-$global_https_proxy}\n\
+      echo \"Setting https_proxy to $https_proxy\"\n\n#\n# Determine operating system\
+      \ and version \n#\nexport OS=\nexport OS_VERSION=\n\nif [ -f /etc/redhat-release\
+      \ ]; then\n    # For CentOS the result will be 'CentOS'\n    # For RHEL the\
+      \ result will be 'Red'\n    OS=$(cat /etc/redhat-release | awk {'print $1'})\n\
+      \n    if [ -n $OS ] && [ $OS = 'CentOS' ]; then\n        OS_VERSION=$(cat /etc/redhat-release\
+      \ | awk '{print $3}')\n    else\n        # RHEL\n        OS_VERSION=$(cat /etc/redhat-release\
+      \ | awk '{print $7}')\n    fi\n\nelif [ -f /etc/SuSE-release ]; then\n    OS=SuSE\n\
+      \n    MAJOR_VERSION=$(cat /etc/SuSE-release | grep VERSION | awk '{print $3}')\n\
+      \    PATCHLEVEL=$(cat /etc/SuSE-release | grep PATCHLEVEL | awk '{print $3}')\n\
+      \n    OS_VERSION=\"$MAJOR_VERSION.$PATCHLEVEL\"\n\nelif [ -f /usr/bin/lsb_release\
+      \ ]; then\n    # For Ubuntu the result is 'Ubuntu'\n    OS=$(lsb_release -a\
+      \ 2> /dev/null | grep Distributor | awk '{print $3}')\n    OS_VERSION=$(lsb_release\
+      \ -a 2> /dev/null | grep Release | awk '{print $2}')\n\nfi\n\necho \"Using operating\
+      \ system '$OS' and version '$OS_VERSION'\"\n\nif [ \"x${global_http_proxy}\"\
+      \ == \"x\" ] || [ \"x${global_https_proxy}\" == \"x\" ] ||\n   [ \"x${global_ftp_proxy}\"\
+      \ == \"x\" ]; then\n   echo \"\"\n   echo \"###############################################################\"\
+      \n   echo \"#  One or more PROXY(s) not set. Network downloads may fail   #\"\
+      \n   echo \"###############################################################\"\
+      \n   echo \"\"\nfi\n\nexport PATH=$PATH:$JAVA_HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\n\
+      set -e\n\n# Locate the my.cnf file \nmy_cnf_file=\nif [ -f /etc/my.cnf ]; then\
+      \ \n    my_cnf_file=/etc/my.cnf\nelif [ -f /etc/mysql/my.cnf ]; then \n    my_cnf_file=/etc/mysql/my.cnf\n\
+      fi\n\nif [ \"x$my_cnf_file\" = \"x\" ]; then \n    echo \"Neither /etc/my.cnf\
+      \ nor /etc/mysql/my.cnf can be found, stopping configuration\"\n    exit 1\n\
+      fi\n\n# update mysql configuration to handle big packets\nsed -ie \"s/\\[mysqld\\\
+      ]/\\[mysqld\\]\\n\\\nmax_allowed_packet=$max_allowed_packet/g\" $my_cnf_file\n\
+      # update listening port\nsed -ie \"s/\\[mysqld\\]/\\[mysqld\\]\\n\\\nport=$db_port/g\"\
+      \ $my_cnf_file\n\nsed -i \"s/port.*=.*[0-9]*/port=$db_port/g\" $my_cnf_file\n\
+      \nif [ \"x$OS\" != \"x\" ] && [ \"$OS\" = 'Ubuntu' ]; then\n    # Make sure\
+      \ that MySQL is started \n    service mysql restart\nelse \n    # set up auto-start\
+      \ on booting\n    chkconfig mysqld on\n    # restart mysqld service\n    service\
+      \ mysqld start\nfi\n\n# this will assign a password for mysql admin user 'root'\n\
+      mysqladmin -u $db_root_username password $db_root_password\n                "
+    isRebootAfter: false
+    scriptTypeId: "Bash"
+  taskDescriptorRef:
+    id: "CONFIGURE"
+    label: "Configure"

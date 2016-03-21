@@ -1,6 +1,6 @@
 '@type': "SoftwareComponentType"
 createdDate: "2016-03-13T22:57:09.507Z"
-lastUpdated: "2016-03-16T11:53:20.091Z"
+lastUpdated: "2016-03-21T17:41:28.641Z"
 id: "Software.ApacheLB"
 name: "Apache Load Balancer"
 description: "Apache 2.2 The Apache HTTP Server is an open-source HTTP server for\
@@ -229,6 +229,12 @@ schema:
     state:
       dependencies: []
       facets:
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
       - type: "visible"
         value:
           type: "constantClause"
@@ -238,12 +244,6 @@ schema:
       - type: "internal"
         value:
           type: "constantClause"
-          value:
-            type: "boolean"
-            value: true
-      - type: "mandatory"
-        value:
-          type: "constant"
           value:
             type: "boolean"
             value: true
@@ -380,7 +380,7 @@ schema:
 containerFieldId: "host"
 lifecycleTasks:
 - createdDate: "2016-03-13T22:57:09.511Z"
-  lastUpdated: "2016-03-16T13:46:01.135Z"
+  lastUpdated: "2016-03-21T17:41:28.641Z"
   script:
     scriptContent: "#!/bin/bash \n# Import global conf \nexport ftp_proxy=${ftp_proxy:-$global_ftp_proxy}\n\
       echo \"Setting ftp_proxy to $ftp_proxy\"\n\nexport http_proxy=${http_proxy:-$global_http_proxy}\n\
@@ -411,7 +411,7 @@ lifecycleTasks:
     id: "INSTALL"
     label: "Install"
 - createdDate: "2016-03-13T22:57:09.510Z"
-  lastUpdated: "2016-03-16T13:46:01.135Z"
+  lastUpdated: "2016-03-21T17:41:28.641Z"
   script:
     scriptContent: "export ftp_proxy=${ftp_proxy:-$global_ftp_proxy}\necho \"Setting\
       \ ftp_proxy to $ftp_proxy\"\n\nexport http_proxy=${http_proxy:-$global_http_proxy}\n\
@@ -437,7 +437,7 @@ lifecycleTasks:
     id: "START"
     label: "Start"
 - createdDate: "2016-03-13T22:57:09.511Z"
-  lastUpdated: "2016-03-16T13:46:01.135Z"
+  lastUpdated: "2016-03-21T17:41:28.641Z"
   script:
     scriptContent: "#!/bin/bash\n# Import global conf \nexport ftp_proxy=${ftp_proxy:-$global_ftp_proxy}\n\
       echo \"Setting ftp_proxy to $ftp_proxy\"\n\nexport http_proxy=${http_proxy:-$global_http_proxy}\n\

@@ -1,6 +1,6 @@
 '@type': "SoftwareComponentType"
 createdDate: "2016-03-13T22:57:10.730Z"
-lastUpdated: "2016-03-14T02:41:01.508Z"
+lastUpdated: "2016-03-21T17:41:29.341Z"
 id: "Software.JBossAppServer"
 name: "JBoss Application Server"
 description: "Clusterable JBoss 5.1 on Linux JBoss Application Server is the open\
@@ -275,15 +275,21 @@ schema:
     state:
       dependencies: []
       facets:
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
       - type: "visible"
         value:
           type: "constantClause"
           value:
             type: "boolean"
             value: false
-      - type: "mandatory"
+      - type: "internal"
         value:
-          type: "constant"
+          type: "constantClause"
           value:
             type: "boolean"
             value: true
@@ -345,7 +351,7 @@ schema:
 containerFieldId: "host"
 lifecycleTasks:
 - createdDate: "2016-03-13T22:57:10.735Z"
-  lastUpdated: "2016-03-14T02:41:01.508Z"
+  lastUpdated: "2016-03-21T17:41:29.341Z"
   script:
     scriptContent: "#!/bin/bash\n# Import global conf \nexport ftp_proxy=${ftp_proxy:-$global_ftp_proxy}\n\
       echo \"Setting ftp_proxy to $ftp_proxy\"\n\nexport http_proxy=${http_proxy:-$global_http_proxy}\n\
@@ -400,36 +406,8 @@ lifecycleTasks:
   taskDescriptorRef:
     id: "INSTALL"
     label: "Install"
-- createdDate: "2016-03-13T22:57:10.734Z"
-  lastUpdated: "2016-03-14T02:41:01.508Z"
-  script:
-    scriptContent: "#!/bin/bash\n# Import global conf\nexport ftp_proxy=${ftp_proxy:-$global_ftp_proxy}\n\
-      echo \"Setting ftp_proxy to $ftp_proxy\"\n\nexport http_proxy=${http_proxy:-$global_http_proxy}\n\
-      echo \"Setting http_proxy to $http_proxy\"\n\nexport https_proxy=${https_proxy:-$global_https_proxy}\n\
-      echo \"Setting https_proxy to $https_proxy\"\n\n\n#\n# Determine operating system\
-      \ and version \n#\nexport OS=\nexport OS_VERSION=\n\nif [ -f /etc/redhat-release\
-      \ ]; then\n    # For CentOS the result will be 'CentOS'\n    # For RHEL the\
-      \ result will be 'Red'\n    OS=$(cat /etc/redhat-release | awk {'print $1'})\n\
-      \n    if [ -n $OS ] && [ $OS = 'CentOS' ]; then\n        OS_VERSION=$(cat /etc/redhat-release\
-      \ | awk '{print $3}')\n    else\n        # RHEL\n        OS_VERSION=$(cat /etc/redhat-release\
-      \ | awk '{print $7}')\n    fi\n\nelif [ -f /etc/SuSE-release ]; then\n    OS=SuSE\n\
-      \n    MAJOR_VERSION=$(cat /etc/SuSE-release | grep VERSION | awk '{print $3}')\n\
-      \    PATCHLEVEL=$(cat /etc/SuSE-release | grep PATCHLEVEL | awk '{print $3}')\n\
-      \n    OS_VERSION=\"$MAJOR_VERSION.$PATCHLEVEL\"\n\nelif [ -f /usr/bin/lsb_release\
-      \ ]; then\n    # For Ubuntu the result is 'Ubuntu'\n    OS=$(lsb_release -a\
-      \ 2> /dev/null | grep Distributor | awk '{print $3}')\n    OS_VERSION=$(lsb_release\
-      \ -a 2> /dev/null | grep Release | awk '{print $2}')\n\nfi\n\nexport PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$JAVA_HOME/bin\n\
-      set -e\n\nservice jboss start\nsleep 120\nTEST=`service jboss status`\nif [[\
-      \ {$TEST} = *running* ]]; then\n\techo \"Jboss service is running\"\nelse \n\
-      \techo \"Jboss service is not running. Please check the logs.\"\n\texit 1\n\
-      fi\n                \n            "
-    isRebootAfter: false
-    scriptTypeId: "Bash"
-  taskDescriptorRef:
-    id: "START"
-    label: "Start"
 - createdDate: "2016-03-13T22:57:10.732Z"
-  lastUpdated: "2016-03-14T02:41:01.508Z"
+  lastUpdated: "2016-03-21T17:41:29.341Z"
   script:
     scriptContent: "#!/bin/bash\n# Import global conf\nexport ftp_proxy=${ftp_proxy:-$global_ftp_proxy}\n\
       echo \"Setting ftp_proxy to $ftp_proxy\"\n\nexport http_proxy=${http_proxy:-$global_http_proxy}\n\
@@ -460,3 +438,31 @@ lifecycleTasks:
   taskDescriptorRef:
     id: "CONFIGURE"
     label: "Configure"
+- createdDate: "2016-03-13T22:57:10.734Z"
+  lastUpdated: "2016-03-21T17:41:29.341Z"
+  script:
+    scriptContent: "#!/bin/bash\n# Import global conf\nexport ftp_proxy=${ftp_proxy:-$global_ftp_proxy}\n\
+      echo \"Setting ftp_proxy to $ftp_proxy\"\n\nexport http_proxy=${http_proxy:-$global_http_proxy}\n\
+      echo \"Setting http_proxy to $http_proxy\"\n\nexport https_proxy=${https_proxy:-$global_https_proxy}\n\
+      echo \"Setting https_proxy to $https_proxy\"\n\n\n#\n# Determine operating system\
+      \ and version \n#\nexport OS=\nexport OS_VERSION=\n\nif [ -f /etc/redhat-release\
+      \ ]; then\n    # For CentOS the result will be 'CentOS'\n    # For RHEL the\
+      \ result will be 'Red'\n    OS=$(cat /etc/redhat-release | awk {'print $1'})\n\
+      \n    if [ -n $OS ] && [ $OS = 'CentOS' ]; then\n        OS_VERSION=$(cat /etc/redhat-release\
+      \ | awk '{print $3}')\n    else\n        # RHEL\n        OS_VERSION=$(cat /etc/redhat-release\
+      \ | awk '{print $7}')\n    fi\n\nelif [ -f /etc/SuSE-release ]; then\n    OS=SuSE\n\
+      \n    MAJOR_VERSION=$(cat /etc/SuSE-release | grep VERSION | awk '{print $3}')\n\
+      \    PATCHLEVEL=$(cat /etc/SuSE-release | grep PATCHLEVEL | awk '{print $3}')\n\
+      \n    OS_VERSION=\"$MAJOR_VERSION.$PATCHLEVEL\"\n\nelif [ -f /usr/bin/lsb_release\
+      \ ]; then\n    # For Ubuntu the result is 'Ubuntu'\n    OS=$(lsb_release -a\
+      \ 2> /dev/null | grep Distributor | awk '{print $3}')\n    OS_VERSION=$(lsb_release\
+      \ -a 2> /dev/null | grep Release | awk '{print $2}')\n\nfi\n\nexport PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$JAVA_HOME/bin\n\
+      set -e\n\nservice jboss start\nsleep 120\nTEST=`service jboss status`\nif [[\
+      \ {$TEST} = *running* ]]; then\n\techo \"Jboss service is running\"\nelse \n\
+      \techo \"Jboss service is not running. Please check the logs.\"\n\texit 1\n\
+      fi\n                \n            "
+    isRebootAfter: false
+    scriptTypeId: "Bash"
+  taskDescriptorRef:
+    id: "START"
+    label: "Start"

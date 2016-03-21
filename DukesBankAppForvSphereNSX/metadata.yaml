@@ -1,9 +1,9 @@
-name: "auto-generated-pkg-906cca07-d254-4890-9969-511727f9a322"
+name: "auto-generated-pkg-c545aaed-f00f-47c4-80a7-a0f5672a10f5"
 productVersion: "7.0.1-SNAPSHOT"
 data:
-- locator: "composite-blueprint/Blueprint.DukesBankApplicationForvSphere.yaml"
+- locator: "composite-blueprint/Blueprint.DukesBankApplicationForvSphereNSX.yaml"
   name: "Dukes Bank Application For vSphere NSX"
-  description: "Dukes Bank Application For vSphere"
+  description: "Dukes Bank Application For vSphere NSX"
   dependencies:
   - "software-component/Software.JBossAppServer.yaml"
   - "software-component/Software.DukesBankApp.yaml"
@@ -43,4 +43,4 @@ data:
   - "software-component/Software.JBossAppServer.yaml"
 - locator: "software-component/Software.centosyumrepo.yaml"
   name: "centos yum repo"
-exportTime: "2016-03-17T20:50:35.208Z"
+exportTime: "2016-03-21T18:53:32.621Z"
